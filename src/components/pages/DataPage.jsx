@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Users, Zap, Sparkles, Trophy } from 'lucide-react';
+import { Users, Zap, Sparkles, Trophy, TrendingUp } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
 import AnimatedCounter from '../common/AnimatedCounter';
 import { surveyPlatforms } from '../../data/surveyPlatforms';
@@ -7,7 +7,6 @@ import { getTheme } from '../../config/theme';
 
 const DataPage = ({ 
   isDarkMode, 
-  userPoints, 
   participants, 
   setCurrentPage, 
   isVisible 
@@ -45,14 +44,6 @@ const DataPage = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
             { 
-              icon: Star, 
-              label: 'مجموع النقاط', 
-              value: userPoints, 
-              color: 'from-green-500 to-emerald-500',
-              bgColor: 'bg-green-500',
-              emoji: '💎'
-            },
-            { 
               icon: Users, 
               label: 'إجمالي المشاركات', 
               value: participants.length, 
@@ -67,6 +58,15 @@ const DataPage = ({
               color: 'from-purple-500 to-pink-500',
               bgColor: 'bg-purple-500',
               emoji: '⚡'
+            },
+            { 
+              icon: TrendingUp, 
+              label: 'معدل النمو', 
+              value: participants.length > 0 ? Math.floor((participants.length / 30) * 100) : 0, 
+              color: 'from-green-500 to-emerald-500',
+              bgColor: 'bg-green-500',
+              emoji: '📈',
+              suffix: '%'
             }
           ].map((stat, index) => (
             <div
@@ -82,6 +82,7 @@ const DataPage = ({
                     <div className="text-right">
                       <p className={`text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.color} animate-pulse`}>
                         <AnimatedCounter value={stat.value} />
+                        {stat.suffix && <span>{stat.suffix}</span>}
                       </p>
                     </div>
                   </div>
@@ -90,6 +91,35 @@ const DataPage = ({
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Value Proposition Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-4xl mx-auto">
+          <div className={`transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <div className="relative group">
+              <div className={`absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500`}></div>
+              <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border text-center`}>
+                <div className="text-5xl mb-4 animate-bounce">💰</div>
+                <h3 className={`text-2xl font-bold ${theme.textPrimary} mb-4`}>رأيك = ربح</h3>
+                <p className={`${theme.textSecondary} text-lg leading-relaxed`}>
+                  رأيك له قيمة… ومع تطبيق ClickOne يتحول إلى ربح حقيقي
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className={`transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '200ms' }}>
+            <div className="relative group">
+              <div className={`absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500`}></div>
+              <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border text-center`}>
+                <div className="text-5xl mb-4 animate-bounce">🤝</div>
+                <h3 className={`text-2xl font-bold ${theme.textPrimary} mb-4`}>شراكة مربحة</h3>
+                <p className={`${theme.textSecondary} text-lg leading-relaxed`}>
+                  أنت تُشارك برأيك، ونحن نشاركك الأرباح
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Participation Table */}
@@ -163,7 +193,7 @@ const DataPage = ({
             <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
             <div className="relative flex items-center space-x-3 text-xl">
               <Sparkles className="animate-spin" size={24} />
-              <span>🎉 عودة لجمع المزيد من النقاط! 🎉</span>
+              <span>🎉 عودة لمشاركة المزيد من الآراء! 🎉</span>
               <Trophy className="animate-bounce" size={24} />
             </div>
           </button>

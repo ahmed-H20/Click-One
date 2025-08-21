@@ -1,13 +1,12 @@
-import React from 'react';
-import { Users, Gift, Zap, Trophy, Sparkles, ExternalLink, Star } from 'lucide-react';
+import { Users, Zap, Trophy, Sparkles, ExternalLink, Star } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
-import AnimatedCounter from '../common/AnimatedCounter';
+import LiveUserCounter from '../common/LiveUserCounter';
+import DownloadBanner from '../common/DownloadBanner';
 import { surveyPlatforms } from '../../data/surveyPlatforms';
 import { getTheme } from '../../config/theme';
 
 const HomePage = ({ 
   isDarkMode, 
-  userPoints, 
   participants, 
   setCurrentPage, 
   handleSurveySelect,
@@ -44,6 +43,28 @@ const HomePage = ({
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-8">
+        {/* Logo Section */}
+        <div className={`flex justify-center mb-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className="relative group">
+            <div className={`absolute -inset-4 bg-gradient-to-r ${theme.glowBorder} rounded-full blur-xl opacity-30 group-hover:opacity-60 transition duration-500 animate-pulse`}></div>
+            <div className="relative">
+              <img 
+                src="public/clickone.jpeg" 
+                alt="ClickOne Logo" 
+                className="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-2xl object-cover animate-float border-4 border-white border-opacity-20 backdrop-blur-lg"
+                onError={(e) => {
+                  // Fallback if image doesn't exist
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-2xl border-4 border-white border-opacity-20 backdrop-blur-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-4xl md:text-5xl font-bold text-white animate-float hidden">
+                C1
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Hero Section */}
         <div className={`text-center mb-16 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <div className={`inline-flex items-center space-x-2 ${theme.cardBg} backdrop-blur-lg rounded-full px-6 py-2 mb-6 animate-bounce border`}>
@@ -56,10 +77,10 @@ const HomePage = ({
             ClickOne
           </h1>
           
-          <p className={`text-2xl md:text-3xl ${theme.textSecondary} max-w-4xl mx-auto leading-relaxed mb-8`}>
-            🎯 اجمع النقاط من الاستطلاعات 
-            <span className="block text-yellow-600 animate-pulse">✨ واستبدلها بمكافآت حصرية ✨</span>
-          </p>
+          <div className={`text-2xl md:text-3xl ${theme.textSecondary} max-w-4xl mx-auto leading-relaxed mb-8`}>
+            <p className="mb-4">🎯 رأيك له قيمة… ومع تطبيق ClickOne يتحول إلى ربح حقيقي</p>
+            <p className="text-yellow-600 animate-pulse">✨ أنت تُشارك برأيك، ونحن نشاركك الأرباح ✨</p>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button 
@@ -73,24 +94,15 @@ const HomePage = ({
               </div>
             </button>
             
-            <div className={`flex items-center space-x-4 ${theme.cardBg} backdrop-blur-lg rounded-full px-6 py-3 border`}>
-              <div className="flex items-center space-x-2">
-                <Gift className="text-green-500 animate-bounce" size={20} />
-                <span className={theme.textSecondary}>نقاطك:</span>
-                <span className="text-2xl font-bold text-green-500">
-                  <AnimatedCounter value={userPoints} />
-                </span>
-              </div>
-            </div>
+            <LiveUserCounter isDarkMode={isDarkMode} />
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           {[
             { icon: Zap, label: 'منصات الاستطلاعات', value: surveyPlatforms.length, color: 'from-yellow-500 to-orange-500', bgColor: 'bg-yellow-500' },
-            { icon: Users, label: 'إجمالي المشاركات', value: participants.length, color: 'from-green-500 to-emerald-500', bgColor: 'bg-green-500' },
-            { icon: Star, label: 'نقاط متاحة', value: userPoints, color: 'from-purple-500 to-pink-500', bgColor: 'bg-purple-500' }
+            { icon: Users, label: 'إجمالي المشاركات', value: participants.length, color: 'from-green-500 to-emerald-500', bgColor: 'bg-green-500' }
           ].map((stat, index) => (
             <div
               key={index}
@@ -106,7 +118,7 @@ const HomePage = ({
                     </div>
                     <div className="text-right">
                       <p className={`text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${stat.color}`}>
-                        <AnimatedCounter value={stat.value} />
+                        {stat.value}
                       </p>
                     </div>
                   </div>
@@ -117,8 +129,37 @@ const HomePage = ({
           ))}
         </div>
 
+        {/* Value Proposition Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
+          <div className={`transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+            <div className="relative group">
+              <div className={`absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500`}></div>
+              <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border text-center`}>
+                <div className="text-5xl mb-4 animate-bounce">💰</div>
+                <h3 className={`text-2xl font-bold ${theme.textPrimary} mb-4`}>رأيك = ربح</h3>
+                <p className={`${theme.textSecondary} text-lg leading-relaxed`}>
+                  رأيك له قيمة… ومع تطبيق ClickOne يتحول إلى ربح حقيقي
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className={`transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '200ms' }}>
+            <div className="relative group">
+              <div className={`absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500`}></div>
+              <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border text-center`}>
+                <div className="text-5xl mb-4 animate-bounce">🤝</div>
+                <h3 className={`text-2xl font-bold ${theme.textPrimary} mb-4`}>شراكة مربحة</h3>
+                <p className={`${theme.textSecondary} text-lg leading-relaxed`}>
+                  أنت تُشارك برأيك، ونحن نشاركك الأرباح
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Platforms Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
           {surveyPlatforms.map((platform, index) => (
             <div
               key={platform.id}
@@ -142,23 +183,11 @@ const HomePage = ({
                     </div>
                     <div className="text-right">
                       <div className={`${theme.textMuted} text-sm`}>{platform.estimatedTime}</div>
-                      <div className={`text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r ${platform.color} animate-pulse`}>
-                        {platform.points}
-                      </div>
                     </div>
                   </div>
                   
                   <h3 className={`text-2xl font-bold ${theme.textPrimary} mb-4`}>{platform.title}</h3>
                   <p className={`${theme.textSecondary} mb-6 leading-relaxed text-sm`}>{platform.description}</p>
-                  
-                  <div className="flex items-center justify-center mb-6">
-                    <div className={`bg-gradient-to-r ${platform.color} rounded-full px-6 py-2 shadow-lg`}>
-                      <div className="flex items-center space-x-2">
-                        <Gift className="text-white animate-bounce" size={16} />
-                        <span className="text-white font-bold">{platform.points}</span>
-                      </div>
-                    </div>
-                  </div>
                   
                   <button
                     onClick={() => handleSurveySelect(platform)}
@@ -167,7 +196,7 @@ const HomePage = ({
                     <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                     <div className="relative flex items-center justify-center space-x-3">
                       <Zap className="group-hover:animate-bounce" size={20} />
-                      <span className="text-lg">⚡ ابدأ جمع النقاط</span>
+                      <span className="text-lg">⚡ ابدأ الاستطلاع</span>
                       <ExternalLink className="group-hover:animate-pulse" size={18} />
                     </div>
                   </button>
@@ -177,11 +206,14 @@ const HomePage = ({
           ))}
         </div>
 
+        {/* Download Banner */}
+        <DownloadBanner isDarkMode={isDarkMode} />
+
         {/* Bottom CTA */}
         <div className={`text-center mt-16 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '1200ms' }}>
           <div className={`inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-600 hover:shadow-green-500/50 rounded-full px-8 py-4 text-white font-bold text-lg shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse`}>
             <Trophy className="animate-spin" size={24} />
-            <span>🎉 ابدأ رحلتك الآن واجمع النقاط! 🎉</span>
+            <span>🎉 ابدأ رحلتك الآن واشارك رأيك! 🎉</span>
             <Sparkles className="animate-bounce" size={24} />
           </div>
         </div>

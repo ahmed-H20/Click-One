@@ -4,7 +4,6 @@ import HomePage from './components/pages/HomePage';
 import CPXFramePage from './components/pages/CPXFramePage';
 import RedirectPage from './components/pages/RedirectPage';
 import DataPage from './components/pages/DataPage';
-import { DEFAULT_SETTINGS } from './data/surveyPlatforms';
 import { validateForm } from './utils/validation';
 import './styles/globals.css';
 import { UserInfoPage } from './components/pages/UserInfoPage';
@@ -13,7 +12,6 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [participants, setParticipants] = useState([]);
-  const [userPoints, setUserPoints] = useState(DEFAULT_SETTINGS.INITIAL_POINTS);
   const [formData, setFormData] = useState({ name: '', phone: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -93,7 +91,6 @@ const App = () => {
   const renderCurrentPage = () => {
     const commonProps = {
       isDarkMode,
-      userPoints,
       participants,
       setCurrentPage,
       isVisible
@@ -124,7 +121,6 @@ const App = () => {
         return (
           <CPXFramePage 
             {...commonProps}
-            setUserPoints={setUserPoints}
           />
         );
       case 'redirect':

@@ -1,13 +1,11 @@
 import React from 'react';
-import { Gift, Trophy } from 'lucide-react';
+import { ArrowLeft, Trophy } from 'lucide-react';
 import { API_CONFIG } from '../../data/surveyPlatforms';
 import { generateUserData, generateSecureHash } from '../../utils/validation';
 import { getTheme } from '../../config/theme';
 
 const CPXFramePage = ({ 
   isDarkMode, 
-  userPoints, 
-  setUserPoints, 
   setCurrentPage, 
   participants 
 }) => {
@@ -21,8 +19,6 @@ const CPXFramePage = ({
 
   const handleBackToHome = () => {
     setCurrentPage('home');
-    // Add some points for completion (simulation)
-    setUserPoints(prev => prev + Math.floor(Math.random() * 150) + 50);
   };
 
   return (
@@ -34,8 +30,7 @@ const CPXFramePage = ({
               <div className="text-3xl animate-bounce">🎯</div>
               <h1 className={`text-3xl font-bold ${theme.textPrimary}`}>CPX Research</h1>
               <div className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-2 rounded-full shadow-lg animate-pulse">
-                <Gift className="text-white animate-bounce" size={18} />
-                <span className="text-white font-bold">نقاطك: {userPoints}</span>
+                <span className="text-white font-bold">💰 ابدأ الربح</span>
               </div>
             </div>
             <button
@@ -43,7 +38,7 @@ const CPXFramePage = ({
               className={`bg-gradient-to-r ${theme.buttonPrimary} text-white px-6 py-3 rounded-full font-bold transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/50`}
             >
               <div className="flex items-center space-x-2">
-                <Trophy className="animate-spin" size={18} />
+                <ArrowLeft className="animate-pulse" size={18} />
                 <span>العودة للرئيسية</span>
               </div>
             </button>
