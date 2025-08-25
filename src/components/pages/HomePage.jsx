@@ -2,6 +2,7 @@ import { Users, Zap, Trophy, Sparkles, ExternalLink, Star } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
 import LiveUserCounter from '../common/LiveUserCounter';
 import DownloadBanner from '../common/DownloadBanner';
+import GoogleAdsBanner from '../ads/GoogleAdsBanner';
 import { surveyPlatforms } from '../../data/surveyPlatforms';
 import { getTheme } from '../../config/theme';
 
@@ -209,11 +210,14 @@ const HomePage = ({
         {/* Download Banner */}
         <DownloadBanner isDarkMode={isDarkMode} />
 
+        {/* Google Ads Banner */}
+        <GoogleAdsBanner isDarkMode={isDarkMode} position="bottom" />
+
         {/* Bottom CTA */}
         <div className={`text-center mt-16 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '1200ms' }}>
           <div className={`inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-600 hover:shadow-green-500/50 rounded-full px-8 py-4 text-white font-bold text-lg shadow-2xl transform hover:scale-105 transition-all duration-300 animate-pulse`}>
             <Trophy className="animate-spin" size={24} />
-            <span>🎉 ابدأ رحلتك الآن واشارك رأيك! 🎉</span>
+            <span>🎉 ابدأ رحلتك الآن وشارك رأيك! 🎉</span>
             <Sparkles className="animate-bounce" size={24} />
           </div>
         </div>
