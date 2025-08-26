@@ -51,22 +51,35 @@ export const surveyPlatforms = [
   // },
 ];
 
+async function getUserIP() {
+  try {
+    const response = await fetch("https://api64.ipify.org?format=json");
+    const data = await response.json();
+    console.log("User IP:", data.ip);
+    return data.ip;
+  } catch (error) {
+    console.error("Error fetching IP:", error);
+  }
+}
+
 // API Configuration (can be moved to separate config file)
 export const API_CONFIG = {
   CPX_RESEARCH: {
-    APP_ID: "16548",
-    SECURE_KEY: "V3jaWL9UWSXJ6utOhusrpD7F9sFhAclD",
-    BASE_URL: "https://offers.cpx-research.com/index.php"
+    APP_ID: "28867",
+    SECURE_KEY: "EfcUe7qcY1NYTCHrUhKJ5fCULeYZTlpZ",
+    BASE_URL: "https://offers.cpx-research.com/index.php",
+    ext_user_id: generateUserId(),
+    ip_user: await getUserIP()
   },
   THEOREMREACH: {
     BASE_URL: 'https://theoremreach.com/respondent_entry/direct',
-    API_KEY: '190c8bb5c5b277f5a9ecdb81d486', 
+    API_KEY: '8b1a15966177767e2f348528a953', 
     USER_ID: generateUserId(),
-    PLACEMENT_ID: '9e878c32-eaf5-4d52-ba36-845666b3dd62'
+    PLACEMENT_ID: 'b6e946eb-2b82-44f2-bad6-5e18ef438768'
   },
   BITLABS: {
     BASE_URL: 'https://api.bitlabs.ai/v2/client/surveys',
-    API_TOKEN: 'bce8b49f-4941-4169-8edd-5dd765697314', 
+    API_TOKEN: '16e15c0c-2a10-4a35-8fa7-f44889eb9088',
     CLICK_BASE_URL: 'https://api.bitlabs.ai/v2/client/clicks',
     USER_ID: generateUserId() 
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowLeft, Trophy } from 'lucide-react';
 import { API_CONFIG } from '../../data/surveyPlatforms';
-import { generateUserData, generateSecureHash } from '../../utils/validation';
+import { generateUserData } from '../../utils/validation';
 import { getTheme } from '../../config/theme';
 
 const CPXFramePage = ({ 
@@ -13,9 +13,8 @@ const CPXFramePage = ({
   
   // Generate user data for CPX Research
   const { userId, userName, userEmail } = generateUserData(participants);
-  const secureHash = generateSecureHash(userId, API_CONFIG.CPX_RESEARCH.SECURE_KEY);
   
-  const cpxUrl = `${API_CONFIG.CPX_RESEARCH.BASE_URL}?app_id=${API_CONFIG.CPX_RESEARCH.APP_ID}&ext_user_id=${userId}&secure_hash=${secureHash}&username=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&subid_1=&subid_2=`;
+  const cpxUrl = `${API_CONFIG.CPX_RESEARCH.BASE_URL}?app_id=${API_CONFIG.CPX_RESEARCH.APP_ID}&ext_user_id=${userId}&secure_hash=${API_CONFIG.CPX_RESEARCH.SECURE_KEY}&ip_user=${API_CONFIG.CPX_RESEARCH.ip_user}&username=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&subid_1=&subid_2=`;
 
   const handleBackToHome = () => {
     setCurrentPage('home');
