@@ -28,10 +28,7 @@ const CPXFramePage = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="text-3xl animate-bounce">🎯</div>
-              <h1 className={`text-3xl font-bold ${theme.textPrimary}`}>CPX Research</h1>
-              <div className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-2 rounded-full shadow-lg animate-pulse">
-                <span className="text-white font-bold">💰 ابدأ الربح</span>
-              </div>
+              <h1 className={`text-3xl font-bold ${theme.textPrimary}`}>CPX Research</h1>              
             </div>
             <button
               onClick={handleBackToHome}
@@ -53,7 +50,7 @@ const CPXFramePage = ({
             <iframe
               src={cpxUrl}
               width="100%"
-              height="2000px"
+              height="1000px"
               frameBorder="0"
               title="CPX Research Surveys"
               className="w-full rounded-3xl"

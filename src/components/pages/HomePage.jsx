@@ -18,7 +18,7 @@ const HomePage = ({
 
   return (
     <div className={`min-h-screen relative overflow-hidden ${theme.textPrimary}`}>
-      <FloatingParticles isDarkMode={isDarkMode} />
+      
       
       {/* Animated Background */}
       <div className={`absolute inset-0 ${theme.background}`}>
@@ -46,14 +46,8 @@ const HomePage = ({
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Top Horizontal Ads Banner */}
-        <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-          <HorizontalAdsBanner 
-            isDarkMode={isDarkMode} 
-            speed="medium" 
-            position="top"
-            showLabel={true}
-          />
-        </div>
+        
+        <FloatingParticles isDarkMode={isDarkMode} />
 
         {/* Logo Section */}
         <div className={`flex justify-center mb-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
@@ -61,7 +55,7 @@ const HomePage = ({
             <div className={`absolute -inset-4 bg-gradient-to-r ${theme.glowBorder} rounded-full blur-xl opacity-30 group-hover:opacity-60 transition duration-500 animate-pulse`}></div>
             <div className="relative">
               <img 
-                src="public/clickone.jpeg" 
+                src="https://res.cloudinary.com/dqqy8usfz/image/upload/v1756233651/WhatsApp_Image_2025-08-19_at_12.31.03_PM_uou6kz.jpg" 
                 alt="ClickOne Logo" 
                 className="w-32 h-32 md:w-40 md:h-40 rounded-full shadow-2xl object-cover animate-float border-4 border-white border-opacity-20 backdrop-blur-lg"
                 onError={(e) => {
@@ -119,7 +113,7 @@ const HomePage = ({
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
           {[
             { icon: Zap, label: 'منصات الاستطلاعات', value: surveyPlatforms.length, color: 'from-yellow-500 to-orange-500', bgColor: 'bg-yellow-500' },
             { icon: Users, label: 'إجمالي المشاركات', value: participants.length, color: 'from-green-500 to-emerald-500', bgColor: 'bg-green-500' }

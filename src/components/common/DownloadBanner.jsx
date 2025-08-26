@@ -40,7 +40,7 @@ const DownloadBanner = ({ isDarkMode }) => {
                   <div className="absolute -inset-4 bg-white rounded-full blur-xl opacity-30 animate-pulse"></div>
                   <div className="relative">
                     <img 
-                      src="public/clickone.jpeg" 
+                      src="https://res.cloudinary.com/dqqy8usfz/image/upload/v1756233651/WhatsApp_Image_2025-08-19_at_12.31.03_PM_uou6kz.jpg" 
                       alt="ClickOne Logo" 
                       className="w-20 h-20 md:w-24 md:h-24 rounded-full shadow-2xl object-cover border-4 border-white border-opacity-30"
                       onError={(e) => {

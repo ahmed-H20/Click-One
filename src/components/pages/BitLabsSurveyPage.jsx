@@ -102,13 +102,13 @@ const BitLabsSurveyPage = ({
               <button
                 onClick={fetchSurveys}
                 disabled={loading}
-                className={`bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-full font-bold transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50`}
-              >
+                className={`hidden md:block bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-full font-bold transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
                 <div className="flex items-center space-x-2">
-                  <RefreshCw className={`${loading ? 'animate-spin' : ''}`} size={18} />
-                  <span>تحديث</span>
+                    <RefreshCw className={`${loading ? 'animate-spin' : ''}`} size={18} />
+                    <span>تحديث</span>
                 </div>
-              </button>
+            </button>
               <button
                 onClick={handleBackToHome}
                 className={`bg-gradient-to-r ${theme.buttonPrimary} text-white px-6 py-3 rounded-full font-bold transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/50`}
