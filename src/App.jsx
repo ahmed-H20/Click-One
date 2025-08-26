@@ -7,6 +7,8 @@ import DataPage from './components/pages/DataPage';
 import { validateForm } from './utils/validation';
 import './styles/globals.css';
 import { UserInfoPage } from './components/pages/UserInfoPage';
+import TheoremReachFramePage from './components/pages/TheoremReachFramePage';
+import BitLabsSurveyPage from './components/pages/BitLabsSurveyPage';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -31,8 +33,13 @@ const App = () => {
 
   const handleSurveySelect = (survey) => {
     setSelectedSurvey(survey);
-    setCurrentPage('userInfo');
-    setFormData({ name: '', phone: '' });
+    
+    // For BitLabs, go directly to survey list page without user info
+    if (survey.id === 'bitlabs') {
+      setCurrentPage('bitlabs');
+    } else {
+      setCurrentPage('userInfo');
+    }
     setErrors({});
   };
 
@@ -76,7 +83,12 @@ const App = () => {
     // Auto redirect after success message
     setTimeout(() => {
       if (selectedSurvey.type === 'iframe') {
-        setCurrentPage('cpxFrame');
+        if (selectedSurvey.url === 'cpx-research') {
+          setCurrentPage('cpxFrame');
+        } else if (selectedSurvey.url === 'theoremreach') {
+          setCurrentPage('theoremreach');
+        }
+        setShowSuccess(false);        
       } else {
         setCurrentPage('redirect');
         setTimeout(() => {
@@ -120,6 +132,18 @@ const App = () => {
       case 'cpxFrame':
         return (
           <CPXFramePage 
+            {...commonProps}
+          />
+        );
+      case 'theoremreach':
+        return (
+          <TheoremReachFramePage 
+            {...commonProps}
+          />
+        );
+      case 'bitlabs':
+        return (
+          <BitLabsSurveyPage
             {...commonProps}
           />
         );

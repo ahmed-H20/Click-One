@@ -39,8 +39,8 @@ const GoogleAdsBanner = ({ isDarkMode, position = 'bottom' }) => {
           <ins
             className="adsbygoogle block"
             style={{ display: 'block' }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" // Replace with your AdSense publisher ID
-            data-ad-slot="XXXXXXXXXX" // Replace with your ad slot ID
+            data-ad-client="ca-pub-7193351910677878" // Replace with your AdSense publisher ID
+            data-ad-slot="1810578910" // Replace with your ad slot ID
             data-ad-format="auto"
             data-full-width-responsive="true"
           ></ins>
@@ -126,8 +126,8 @@ export const ResponsiveAdBanner = ({ isDarkMode, size = 'large' }) => {
           <ins
             className="adsbygoogle block"
             style={{ display: 'block' }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-            data-ad-slot="XXXXXXXXXX"
+            data-ad-client="ca-pub-7193351910677878"
+            data-ad-slot="1810578910"
             data-ad-format={config.adFormat}
             data-full-width-responsive={config.responsive.toString()}
           ></ins>
@@ -170,8 +170,8 @@ export const StickyAdBanner = ({ isDarkMode, isVisible = true }) => {
           <ins
             className="adsbygoogle block"
             style={{ display: 'block', minHeight: '80px' }}
-            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-            data-ad-slot="XXXXXXXXXX"
+            data-ad-client="ca-pub-7193351910677878"
+            data-ad-slot="1810578910"
             data-ad-format="horizontal"
             data-full-width-responsive="true"
           ></ins>

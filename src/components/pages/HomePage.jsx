@@ -3,6 +3,7 @@ import FloatingParticles from '../common/FloatingParticles';
 import LiveUserCounter from '../common/LiveUserCounter';
 import DownloadBanner from '../common/DownloadBanner';
 import GoogleAdsBanner from '../ads/GoogleAdsBanner';
+import HorizontalAdsBanner, { CompactHorizontalAdsBanner } from '../ads/HorizontalAdsBanner';
 import { surveyPlatforms } from '../../data/surveyPlatforms';
 import { getTheme } from '../../config/theme';
 
@@ -44,6 +45,16 @@ const HomePage = ({
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-8">
+        {/* Top Horizontal Ads Banner */}
+        <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <HorizontalAdsBanner 
+            isDarkMode={isDarkMode} 
+            speed="medium" 
+            position="top"
+            showLabel={true}
+          />
+        </div>
+
         {/* Logo Section */}
         <div className={`flex justify-center mb-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
           <div className="relative group">
@@ -97,6 +108,14 @@ const HomePage = ({
             
             <LiveUserCounter isDarkMode={isDarkMode} />
           </div>
+        </div>
+
+        {/* Compact Horizontal Banner between sections */}
+        <div className={`my-12 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <CompactHorizontalAdsBanner 
+            isDarkMode={isDarkMode} 
+            speed="fast" 
+          />
         </div>
 
         {/* Stats Cards */}
@@ -159,6 +178,16 @@ const HomePage = ({
           </div>
         </div>
 
+        {/* Another Horizontal Banner before platforms */}
+        <div className={`my-16 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <HorizontalAdsBanner 
+            isDarkMode={isDarkMode} 
+            speed="slow" 
+            position="middle"
+            showLabel={false}
+          />
+        </div>
+
         {/* Platforms Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">
           {surveyPlatforms.map((platform, index) => (
@@ -210,8 +239,18 @@ const HomePage = ({
         {/* Download Banner */}
         <DownloadBanner isDarkMode={isDarkMode} />
 
-        {/* Google Ads Banner */}
+        {/* Traditional Google Ads Banner */}
         <GoogleAdsBanner isDarkMode={isDarkMode} position="bottom" />
+
+        {/* Final Horizontal Banner */}
+        <div className={`mt-16 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <HorizontalAdsBanner 
+            isDarkMode={isDarkMode} 
+            speed="medium" 
+            position="bottom"
+            showLabel={true}
+          />
+        </div>
 
         {/* Bottom CTA */}
         <div className={`text-center mt-16 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '1200ms' }}>

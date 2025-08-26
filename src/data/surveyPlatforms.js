@@ -1,3 +1,7 @@
+function generateUserId() {
+  return `user_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+}
+
 export const surveyPlatforms = [
   {
     id: 1,
@@ -15,38 +19,36 @@ export const surveyPlatforms = [
     id: 2,
     title: "TheoremReach",
     description: "استطلاعات متنوعة مع مكافآت مضاعفة في عطلات نهاية الأسبوع",
-    url: "https://info.theoremreach.com",
+    url: "theoremreach",
     category: "استطلاعات تفاعلية",
     estimatedTime: "10-20 دقيقة",
     reward: "مكافآت مضاعفة",
-    type: "external",
+    type: "iframe",
     color: "from-blue-500 to-cyan-500",
     icon: "⚡"
   },
   {
-    id: 3,
-    title: "Pollfish",
-    description: "استطلاعات سريعة ومباشرة، مكافآت فورية بعد الانتهاء",
-    url: "https://www.pollfish.com",
-    category: "استطلاعات سريعة",
-    estimatedTime: "3-10 دقائق",
-    reward: "دفع سريع",
-    type: "external",
-    color: "from-green-500 to-emerald-500",
-    icon: "🚀"
+    id: 'bitlabs',
+    title: 'BitLabs',
+    description: 'استطلاعات عالية الجودة مع مكافآت سريعة ونظام تقييم متقدم',
+    icon: '🔬',
+    color: 'from-green-500 to-teal-600',
+    category: 'استطلاعات عامة',
+    estimatedTime: '6-15 دقيقة',
+    type: 'iframe'
   },
-  {
-    id: 4,
-    title: "BitLabs",
-    description: "استطلاعات مفصلة مع مكافآت عالية للاستطلاعات الطويلة",
-    url: "https://dashboard.bitlabs.ai",
-    category: "استطلاعات مفصلة",
-    estimatedTime: "15-25 دقيقة",
-    reward: "مكافآت عالية",
-    type: "external",
-    color: "from-orange-500 to-red-500",
-    icon: "💎"
-  }
+  // {
+  //   id: 3,
+  //   title: "Pollfish",
+  //   description: "استطلاعات سريعة ومباشرة، مكافآت فورية بعد الانتهاء",
+  //   url: "https://www.pollfish.com",
+  //   category: "استطلاعات سريعة",
+  //   estimatedTime: "3-10 دقائق",
+  //   reward: "دفع سريع",
+  //   type: "external",
+  //   color: "from-green-500 to-emerald-500",
+  //   icon: "🚀"
+  // },
 ];
 
 // API Configuration (can be moved to separate config file)
@@ -55,6 +57,18 @@ export const API_CONFIG = {
     APP_ID: "16548",
     SECURE_KEY: "V3jaWL9UWSXJ6utOhusrpD7F9sFhAclD",
     BASE_URL: "https://offers.cpx-research.com/index.php"
+  },
+  THEOREMREACH: {
+    BASE_URL: 'https://theoremreach.com/respondent_entry/direct',
+    API_KEY: '190c8bb5c5b277f5a9ecdb81d486', 
+    USER_ID: generateUserId(),
+    PLACEMENT_ID: '9e878c32-eaf5-4d52-ba36-845666b3dd62'
+  },
+  BITLABS: {
+    BASE_URL: 'https://api.bitlabs.ai/v2/client/surveys',
+    API_TOKEN: 'bce8b49f-4941-4169-8edd-5dd765697314', 
+    CLICK_BASE_URL: 'https://api.bitlabs.ai/v2/client/clicks',
+    USER_ID: generateUserId() 
   }
 };
 

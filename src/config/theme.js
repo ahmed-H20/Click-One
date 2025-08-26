@@ -18,6 +18,7 @@ export const themeConfig = {
     cardBg: 'bg-gray-800 bg-opacity-60 border-gray-600',
     textPrimary: 'text-white',
     textSecondary: 'text-gray-200',
+    textThird: 'text-black-400',
     textMuted: 'text-gray-300',
     glowBorder: 'from-gray-600 to-gray-700',
     buttonPrimary: 'from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900',
