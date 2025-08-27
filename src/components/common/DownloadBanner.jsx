@@ -63,16 +63,17 @@ const DownloadBanner = ({ isDarkMode }) => {
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                     ))}
-                    <span className="text-white font-bold ml-2">4.8</span>
+                    <span className="text-white font-bold ml-2">5.0</span>
                   </div>
                 </div>
               </div>
               
               <p className="text-2xl md:text-3xl text-white font-bold mb-4 opacity-95">
-                💎 حول آراءك إلى أرباح حقيقية 💎
+                💡 هل أعجبتك فكرة تحقيق أرباح من المشاركة في استطلاعات الرأي؟
+
               </p>
               <p className="text-lg md:text-xl text-white opacity-80 max-w-3xl mx-auto leading-relaxed">
-                انضم إلى آلاف المستخدمين
+                    يمكنك الآن الانضمام إلى ClickOne لتحصل على فرص أكبر وأرباح إضافية من عدة مصادر متنوعة تتجاوز الاستطلاعات فقط.
               </p>
             </div>
 
@@ -80,7 +81,7 @@ const DownloadBanner = ({ isDarkMode }) => {
             <div className="grid grid-cols-3 gap-4 md:gap-8 mb-12 max-w-2xl mx-auto">
               {[
                 { icon: Users, number: '1K+', label: 'مستخدم نشط' },
-                { icon: Trophy, number: '4.8', label: 'تقييم التطبيق' },
+                { icon: Trophy, number: '5.0', label: 'تقييم التطبيق' },
                 { icon: Download, number: '1K+', label: 'تحميل' }
               ].map((stat, index) => (
                 <div key={index} className="text-center">

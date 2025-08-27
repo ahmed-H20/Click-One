@@ -1,4 +1,4 @@
-import { Users, Zap, Trophy, Sparkles, ExternalLink, Star } from 'lucide-react';
+import { Users, Zap, Trophy, Sparkles, ExternalLink, Star, Facebook } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
 import LiveUserCounter from '../common/LiveUserCounter';
 import DownloadBanner from '../common/DownloadBanner';
@@ -82,6 +82,18 @@ const HomePage = ({
           <h1 className={`text-6xl md:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-6 animate-pulse`}>
             ClickOne
           </h1>
+          
+          {/* New Welcome Message */}
+          <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 mb-8 max-w-5xl mx-auto border border-opacity-20`}>
+            <div className="flex items-center justify-center mb-4">
+              <Sparkles className="text-yellow-400 animate-spin" size={24} />
+              <span className={`text-2xl md:text-3xl font-bold ${theme.textPrimary} mx-3`}>مرحباً بك في عالم ClickOne</span>
+              <Sparkles className="text-yellow-400 animate-spin" size={24} />
+            </div>
+            <p className={`text-lg md:text-xl ${theme.textSecondary} leading-relaxed text-right`}>
+              هنا تبدأ رحلتك نحو الاستفادة من أدوات رقمية مبتكرة تمنحك الفرصة لتنمية رصيدك واستثمار وقتك بذكاء. من خلال المشاركة في الاستطلاعات البسيطة، يمكنك تعزيز نشاطك اليومي والاستفادة من نظام متكامل يجمع بين التسوّق الذكي، التبادل التجاري، وتحقيق الأرباح بمرونة وشفافية.
+            </p>
+          </div>
           
           <div className={`text-2xl md:text-3xl ${theme.textSecondary} max-w-4xl mx-auto leading-relaxed mb-8`}>
             <p className="mb-4">🎯 رأيك له قيمة… ومع تطبيق ClickOne يتحول إلى ربح حقيقي</p>
@@ -244,6 +256,65 @@ const HomePage = ({
             position="bottom"
             showLabel={true}
           />
+        </div>
+
+        {/* Facebook Links Section */}
+        <div className={`text-center mt-16 mb-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`} style={{ transitionDelay: '1000ms' }}>
+          <div className={`${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 max-w-4xl mx-auto border border-opacity-20`}>
+            <div className="flex items-center justify-center mb-6">
+              <Facebook className="text-blue-600 animate-pulse" size={32} />
+              <h3 className={`text-2xl font-bold ${theme.textPrimary} mx-3`}>تابعنا على فيسبوك</h3>
+              <Facebook className="text-blue-600 animate-pulse" size={32} />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+                <a 
+                  href="https://www.facebook.com/share/1B1vA3DsFs/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`relative flex flex-col h-full ${theme.cardBg} backdrop-blur-lg rounded-2xl p-6 border hover:border-blue-500 transition-all duration-300 transform hover:scale-105`}
+                >
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="flex items-center justify-center mb-4">
+                      <img width="48" height="48" src="https://img.icons8.com/fluency/48/facebook-new.png" alt="facebook-new"/>
+                    </div>
+                  </div>
+                  <h4 className={`text-lg font-bold ${theme.textPrimary} mb-3`}>مجموعة المستخدمين</h4>
+                  <p className={`${theme.textSecondary} text-sm leading-relaxed flex-grow`}>
+                    رابط صفحة لمجموعة من مستخدمي تطبيقنا على الفيسبوك
+                  </p>
+                  <div className="flex items-center justify-center mt-4">
+                    <ExternalLink className="text-blue-500 group-hover:animate-pulse" size={16} />
+                    <span className="text-blue-500 font-medium mr-2">انضم للمجموعة</span>
+                  </div>
+                </a>
+              </div>
+
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+                <a 
+                  href="https://www.facebook.com/share/1LEyXoWcop/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`relative flex flex-col h-full ${theme.cardBg} backdrop-blur-lg rounded-2xl p-6 border hover:border-blue-500 transition-all duration-300 transform hover:scale-105`}
+                >
+                  <div className="flex items-center justify-center mb-4">
+                      <img width="48" height="48" src="https://img.icons8.com/fluency/48/facebook-new.png" alt="facebook-new"/>
+                  </div>
+                  <h4 className={`text-lg font-bold ${theme.textPrimary} mb-3`}>الصفحة الرسمية</h4>
+                  <p className={`${theme.textSecondary} text-sm leading-relaxed flex-grow`}>
+                    رابط صفحتنا الرسمية على فيسبوك
+                  </p>
+                  <div className="flex items-center justify-center mt-4">
+                    <ExternalLink className="text-blue-600 group-hover:animate-pulse" size={16} />
+                    <span className="text-blue-600 font-medium mr-2">زور صفحتنا</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Bottom CTA */}
