@@ -62,7 +62,6 @@ async function getUserIP() {
   }
 }
 
-console.log("Environment Variables:", import.meta.env)
 
 // API Configuration (can be moved to separate config file)
 export const API_CONFIG = {
