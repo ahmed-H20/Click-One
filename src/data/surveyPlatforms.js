@@ -62,25 +62,27 @@ async function getUserIP() {
   }
 }
 
+console.log("Environment Variables:", import.meta.env)
+
 // API Configuration (can be moved to separate config file)
 export const API_CONFIG = {
   CPX_RESEARCH: {
-    APP_ID: "28867",
-    SECURE_KEY: "EfcUe7qcY1NYTCHrUhKJ5fCULeYZTlpZ",
-    BASE_URL: "https://offers.cpx-research.com/index.php",
+    APP_ID: import.meta.env.VITE_CPX_APP_ID,
+    SECURE_KEY: import.meta.env.VITE_CPX_SECURE_KEY,
+    BASE_URL: import.meta.env.VITE_CPX_BASE_URL,
     ext_user_id: generateUserId(),
     ip_user: await getUserIP()
   },
   THEOREMREACH: {
-    BASE_URL: 'https://theoremreach.com/respondent_entry/direct',
-    API_KEY: '8b1a15966177767e2f348528a953', 
-    USER_ID: generateUserId(),
-    PLACEMENT_ID: 'b6e946eb-2b82-44f2-bad6-5e18ef438768'
+    BASE_URL: import.meta.env.VITE_THEOREM_BASE_URL,
+    API_KEY: import.meta.env.VITE_THEOREM_API_KEY,
+    USER_ID: import.meta.env.VITE_THEOREM_USER_ID,
+    PLACEMENT_ID: import.meta.env.VITE_THEOREM_PLACEMENT_ID
   },
   BITLABS: {
-    BASE_URL: 'https://api.bitlabs.ai/v2/client/surveys',
-    API_TOKEN: '16e15c0c-2a10-4a35-8fa7-f44889eb9088',
-    CLICK_BASE_URL: 'https://api.bitlabs.ai/v2/client/clicks',
+    BASE_URL: import.meta.env.VITE_BITLABS_BASE_URL,
+    API_TOKEN: import.meta.env.VITE_BITLABS_API_TOKEN,
+    CLICK_BASE_URL: import.meta.env.VITE_BITLABS_CLICK_BASE_URL,
     USER_ID: generateUserId() 
   }
 };
