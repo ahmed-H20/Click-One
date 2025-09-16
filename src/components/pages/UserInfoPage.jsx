@@ -180,8 +180,9 @@ export const UserInfoPage = ({
               </div>
 
               {/* Form with Google Sheets integration */}
-              <form method="POST" action={scriptURL} onSubmit={handleFormSubmit} noValidate>
-                <div className="space-y-6">
+              {/* <form method="POST" action={scriptURL} onSubmit={handleFormSubmit} noValidate> */}
+              <form onSubmit={handleFormSubmit} noValidate>
+               <div className="space-y-6">
                   {/* Name Field */}
                   <div className="relative">
                     <label 
