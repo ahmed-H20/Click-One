@@ -188,26 +188,26 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
             }}
           >
             {/* AdSense Mobile Banner */}            
-               <div className="flex items-center px-4">
+            <div className="flex items-center px-4">
               <ins
-                  className="adsbygoogle"
-                  style={{ 
-                    display: 'inline-block',
-                    width: '320px',
-                    height: '50px',
-                    minWidth: '320px'
-                  }}
-                  data-ad-client="ca-pub-7193351910677878"
-                  data-ad-slot="1810578910"
-                  data-ad-format="banner"
-                  data-full-width-responsive="false"
-                ></ins>
-              </div>            
+                className="adsbygoogle"
+                style={{ 
+                  display: 'inline-block',
+                  width: '320px',
+                  height: '50px',
+                  minWidth: '320px'
+                }}
+                data-ad-client="ca-pub-7193351910677878"
+                data-ad-slot="1810578910"
+                data-ad-format="banner"
+                data-full-width-responsive="false"
+              ></ins>
+            </div>            
             
 
             {/* Fallback compact ads */}
             <div className="flex items-center space-x-4 px-4">
-              {[...Array(3)].map((_, index) => (
+              {[...Array(5)].map((_, index) => (
                 <BannerAd key={index} in={index} />                
               ))}
             </div>
