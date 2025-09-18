@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Info, ExternalLink } from 'lucide-react';
 import { getTheme } from '../../config/theme';
 import BannerAd from './BannerAdd';
+import BannerAdBig from './Banner782Ad';
 
 const HorizontalAdsBanner = ({ 
   isDarkMode, 
@@ -84,14 +85,15 @@ const HorizontalAdsBanner = ({
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                  <BannerAd in={index} key={index} />
+                  [<BannerAd in={index} key={index} />, <BannerAdBig in={index} key={`big-${index}`} />]
+                  
               ))}
             </div>
 
             {/* Duplicate for seamless loop */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                  <BannerAd in={index} key={index} />
+                  [<BannerAd in={index} key={index} />, <BannerAdBig in={index} key={`big-${index}`} />]
               ))}
             </div>
           </div>
@@ -205,7 +207,7 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
             {/* Fallback compact ads */}
             <div className="flex items-center space-x-4 px-4">
               {[...Array(8)].map((_, index) => (
-                <BannerAd key={index} in={index} />
+                [<BannerAd key={index} in={index} />, <BannerAdBig key={`big-${index}`} in={index} />]
                 // <div 
                 //   key={index}
                 //   className={`flex-shrink-0 w-40 h-12 ${isDarkMode 
