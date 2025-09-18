@@ -207,7 +207,7 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
 
             {/* Fallback compact ads */}
             <div className="flex items-center space-x-4 px-4">
-              {[...Array(8)].map((_, index) => (
+              {[...Array(3)].map((_, index) => (
                 <BannerAd key={index} in={index} />                
               ))}
             </div>
