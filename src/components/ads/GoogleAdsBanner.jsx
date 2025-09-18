@@ -117,14 +117,14 @@ export const ResponsiveAdBanner = ({ isDarkMode, size = 'large' }) => {
 
         {/* Ad Content */}
         <div className="p-3">
-          {/* <ins
+          <ins
             className="adsbygoogle block"
             style={{ display: 'block' }}
             data-ad-client="ca-pub-7193351910677878"
             data-ad-slot="1810578910"
             data-ad-format={config.adFormat}
             data-full-width-responsive={config.responsive.toString()}
-          ></ins> */}
+          ></ins>
           <Banner />
           
           {/* Fallback */}
@@ -162,16 +162,15 @@ export const StickyAdBanner = ({ isDarkMode, isVisible = true }) => {
 
         {/* Ad container */}
         <div className="px-3 pb-3">
-          {/* <ins
+          <ins
             className="adsbygoogle block"
             style={{ display: 'block', minHeight: '80px' }}
             data-ad-client="ca-pub-7193351910677878"
             data-ad-slot="1810578910"
             data-ad-format="horizontal"
             data-full-width-responsive="true"
-          ></ins> */}
+          ></ins>
           <Banner />
-          
           {/* Fallback */}
           <div className={`min-h-[80px] flex items-center justify-center bg-gradient-to-r ${
             isDarkMode 
