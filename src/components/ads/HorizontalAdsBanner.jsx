@@ -178,7 +178,7 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
     <div className="w-full overflow-hidden">
       <div className={`${theme.cardBg} backdrop-blur-lg border border-opacity-20 rounded-lg shadow-md`}>
         {/* Compact scrolling container */}
-        <div className="relative h-64 overflow-hidden">
+        <div className="relative h-16 overflow-hidden">
           <div 
             className="absolute inset-0 flex items-center whitespace-nowrap animate-scroll-horizontal"
             style={{ 
@@ -207,7 +207,7 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
             {/* Fallback compact ads */}
             <div className="flex items-center space-x-4 px-4">
               {[...Array(8)].map((_, index) => (
-                [<BannerAd key={index} in={index} />, <BannerAdBig key={`big-${index}`} in={index} />]
+                [<BannerAd key={index} in={index} />,<BannerAd key={index} in={index} />] 
                 // <div 
                 //   key={index}
                 //   className={`flex-shrink-0 w-40 h-12 ${isDarkMode 
