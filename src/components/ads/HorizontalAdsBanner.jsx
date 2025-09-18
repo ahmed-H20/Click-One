@@ -81,18 +81,11 @@ const HorizontalAdsBanner = ({
                 data-full-width-responsive="false"
               ></ins>
             </div>
-
-            <div className="flex items-center px-8">
-              <BannerAd />              
-            </div>
-
-            <div className="flex items-center px-8">
-              <BannerAdBig />
-            </div>
+            
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                  [<BannerAd in={index} key={index} />, <BannerAdBig in={index} key={`big-${index}`} />]
+                  <BannerAd in={index} key={index} />
                   
               ))}
             </div>
@@ -100,7 +93,7 @@ const HorizontalAdsBanner = ({
             {/* Duplicate for seamless loop */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                  [<BannerAd in={index} key={index} />, <BannerAdBig in={index} key={`big-${index}`} />]
+                <BannerAdBig in={index} key={`big-${index}`} />
               ))}
             </div>
           </div>
