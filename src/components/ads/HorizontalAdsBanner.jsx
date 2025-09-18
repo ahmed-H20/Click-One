@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Info, ExternalLink } from 'lucide-react';
 import { getTheme } from '../../config/theme';
+import BannerAd from './BannerAdd';
 
 const HorizontalAdsBanner = ({ 
   isDarkMode, 
@@ -82,7 +83,7 @@ const HorizontalAdsBanner = ({
 
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
-              {[...Array(5)].map((_, index) => (
+              {/* {[...Array(5)].map((_, index) => (
                 <div 
                   key={index}
                   className={`flex-shrink-0 w-72 h-16 ${isDarkMode 
@@ -105,12 +106,14 @@ const HorizontalAdsBanner = ({
                     </p>
                   </div>
                 </div>
-              ))}
+              ))} */}
+
+              <BannerAd />
             </div>
 
             {/* Duplicate for seamless loop */}
             <div className="flex items-center space-x-8 px-8">
-              {[...Array(5)].map((_, index) => (
+              {/* {[...Array(5)].map((_, index) => (
                 <div 
                   key={`duplicate-${index}`}
                   className={`flex-shrink-0 w-72 h-16 ${isDarkMode 
@@ -133,7 +136,8 @@ const HorizontalAdsBanner = ({
                     </p>
                   </div>
                 </div>
-              ))}
+              ))} */}
+              <BannerAd />
             </div>
           </div>
 
@@ -245,7 +249,7 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
 
             {/* Fallback compact ads */}
             <div className="flex items-center space-x-4 px-4">
-              {[...Array(8)].map((_, index) => (
+              {/* {[...Array(8)].map((_, index) => (
                 <div 
                   key={index}
                   className={`flex-shrink-0 w-40 h-12 ${isDarkMode 
@@ -260,7 +264,8 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
                     <p className={`${theme.textMuted} text-xs`}>إعلان</p>
                   </div>
                 </div>
-              ))}
+              ))} */}
+              <BannerAd />
             </div>
           </div>
 
