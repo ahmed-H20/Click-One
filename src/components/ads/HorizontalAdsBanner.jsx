@@ -85,7 +85,7 @@ const HorizontalAdsBanner = ({
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                  [<BannerAd in={index} key={index} />, <BannerAdBig in={index} key={`big-${index}`} />]
+                  [<BannerAdBig in={index} key={`big-${index}`} />, <BannerAd in={index} key={index} />]
                   
               ))}
             </div>
