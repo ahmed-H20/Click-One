@@ -83,7 +83,7 @@ const HorizontalAdsBanner = ({
 
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
-              {/* {[...Array(5)].map((_, index) => (
+              {[...Array(5)].map((_, index) => (
                 <div 
                   key={index}
                   className={`flex-shrink-0 w-72 h-16 ${isDarkMode 
@@ -91,24 +91,9 @@ const HorizontalAdsBanner = ({
                     : 'bg-gradient-to-r from-gray-50 to-white'
                   } rounded-lg border border-opacity-20 flex items-center justify-center group hover:shadow-lg transition-shadow duration-300`}
                 >
-                  <div className="text-center">
-                    <div className="text-2xl mb-1">
-                      {['📱', '💻', '🎯', '🛒', '✨'][index]}
-                    </div>
-                    <p className={`${theme.textMuted} text-xs font-medium`}>
-                      {[
-                        'تطبيقات ذكية',
-                        'تقنية حديثة', 
-                        'عروض خاصة',
-                        'تسوق آمن',
-                        'خدمات مميزة'
-                      ][index]}
-                    </p>
-                  </div>
+                  <BannerAd />
                 </div>
-              ))} */}
-
-              <BannerAd />
+              ))}
             </div>
 
             {/* Duplicate for seamless loop */}
