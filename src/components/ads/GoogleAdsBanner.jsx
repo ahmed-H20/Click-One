@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Info, X } from 'lucide-react';
 import { getTheme } from '../../config/theme';
 import Banner from './AdsBanner';
+import BannerAdBig from './Banner782Ad';
 
 const GoogleAdsBanner = ({ isDarkMode, position = 'bottom' }) => {
   const theme = getTheme(isDarkMode);
@@ -37,7 +38,7 @@ const GoogleAdsBanner = ({ isDarkMode, position = 'bottom' }) => {
         {/* Ad Container */}
         <div className="p-4">
           {/* Google AdSense Auto Ad */}
-          <Banner />
+          <BannerAdBig />
           
           {/* Fallback content when ads are not loaded */}
           <div className={`min-h-[120px] flex items-center justify-center bg-gradient-to-r ${isDarkMode ? 'from-gray-700 to-gray-800' : "bg-white" } rounded-lg`}>
@@ -117,15 +118,15 @@ export const ResponsiveAdBanner = ({ isDarkMode, size = 'large' }) => {
 
         {/* Ad Content */}
         <div className="p-3">
-          <ins
+          {/* <ins
             className="adsbygoogle block"
             style={{ display: 'block' }}
             data-ad-client="ca-pub-7193351910677878"
             data-ad-slot="1810578910"
             data-ad-format={config.adFormat}
             data-full-width-responsive={config.responsive.toString()}
-          ></ins>
-          <Banner />
+          ></ins> */}
+          <BannerAdBig />
           
           {/* Fallback */}
           <div className={`${config.height} flex items-center justify-center bg-white bg-gradient-to-br ${isDarkMode ? 'from-gray-700 to-gray-800' : "bg-white" } rounded-lg`}>
