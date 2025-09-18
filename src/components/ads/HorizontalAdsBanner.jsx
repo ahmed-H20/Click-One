@@ -85,7 +85,7 @@ const HorizontalAdsBanner = ({
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                  <BannerAd in={index} key={index} />
+                  [<BannerAd in={index} key={index} />, <BannerAdBig in={index} key={`big-${index}`} />]
                   
               ))}
             </div>
@@ -93,7 +93,7 @@ const HorizontalAdsBanner = ({
             {/* Duplicate for seamless loop */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                <BannerAdBig in={index} key={`big-${index}`} />
+                [<BannerAdBig in={index} key={`big-${index}`} />,<BannerAd in={index} key={index} />]
               ))}
             </div>
           </div>
@@ -187,43 +187,30 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
               animationIterationCount: 'infinite'
             }}
           >
-            {/* AdSense Mobile Banner */}
-            <div className="flex items-center px-4">
-              <ins
-                className="adsbygoogle"
-                style={{ 
-                  display: 'inline-block',
-                  width: '320px',
-                  height: '50px',
-                  minWidth: '320px'
-                }}
-                data-ad-client="ca-pub-7193351910677878"
-                data-ad-slot="1810578910"
-                data-ad-format="banner"
-                data-full-width-responsive="false"
-              ></ins>
-            </div>
+            {/* AdSense Mobile Banner */}            
+              <div className="flex items-center space-x-4 px-4">
+                {[...Array(8)].map((_, index) => (
+                  <BannerAd key={index} in={index} />                
+                ))}
+              </div>              
+            
 
             {/* Fallback compact ads */}
-            <div className="flex items-center space-x-4 px-4">
-              {[...Array(8)].map((_, index) => (
-                <BannerAd key={index} in={index} />
-                // <div 
-                //   key={index}
-                //   className={`flex-shrink-0 w-40 h-12 ${isDarkMode 
-                //     ? 'bg-gray-800' 
-                //     : 'bg-gray-100'
-                //   } rounded border flex items-center justify-center`}
-                // >
-                //   <div className="text-center">
-                //     <div className="text-sm mb-0.5">
-                //       {['🎁', '💎', '⭐', '🔥', '💰', '🎯', '✨', '🚀'][index]}
-                //     </div>
-                //     <p className={`${theme.textMuted} text-xs`}>إعلان</p>
-                //   </div>
-                // </div>
-              ))}
-            </div>
+            <div className="flex items-center px-4">
+              <ins
+                  className="adsbygoogle"
+                  style={{ 
+                    display: 'inline-block',
+                    width: '320px',
+                    height: '50px',
+                    minWidth: '320px'
+                  }}
+                  data-ad-client="ca-pub-7193351910677878"
+                  data-ad-slot="1810578910"
+                  data-ad-format="banner"
+                  data-full-width-responsive="false"
+                ></ins>
+              </div>
           </div>
 
           {/* Fade gradients */}
