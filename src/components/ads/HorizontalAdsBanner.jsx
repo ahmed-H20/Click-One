@@ -178,7 +178,7 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
     <div className="w-full overflow-hidden">
       <div className={`${theme.cardBg} backdrop-blur-lg border border-opacity-20 rounded-lg shadow-md`}>
         {/* Compact scrolling container */}
-        <div className="relative h-16 overflow-hidden">
+        <div className="relative h-64 overflow-hidden">
           <div 
             className="absolute inset-0 flex items-center whitespace-nowrap animate-scroll-horizontal"
             style={{ 
