@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import DarkModeToggle from './components/common/DarkModeToggle';
-import HomePage from './components/pages/HomePage';
-import CPXFramePage from './components/pages/CPXFramePage';
-import RedirectPage from './components/pages/RedirectPage';
-import DataPage from './components/pages/DataPage';
-import { validateForm } from './utils/validation';
-import './styles/globals.css';
-import { UserInfoPage } from './components/pages/UserInfoPage';
-import TheoremReachFramePage from './components/pages/TheoremReachFramePage';
-import BitLabsSurveyPage from './components/pages/BitLabsSurveyPage';
+import React, { useState, useEffect } from "react";
+import Navbar from "./components/common/Navbar";
+import HomePage from "./components/pages/HomePage";
+import CPXFramePage from "./components/pages/CPXFramePage";
+import RedirectPage from "./components/pages/RedirectPage";
+import DataPage from "./components/pages/DataPage";
+import { validateForm } from "./utils/validation";
+import "./styles/globals.css";
+import { UserInfoPage } from "./components/pages/UserInfoPage";
+import TheoremReachFramePage from "./components/pages/TheoremReachFramePage";
+import BitLabsSurveyPage from "./components/pages/BitLabsSurveyPage";
+import ClickOneLandingPage from "./components/pages/LandingPageForms";
+import AdminLogin from "./components/pages/AdminLogin";
+import AddVideos from "./components/pages/AddVideos";
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+  const [currentPage, setCurrentPage] = useState("home");
   const [selectedSurvey, setSelectedSurvey] = useState(null);
   const [participants, setParticipants] = useState([]);
-  const [formData, setFormData] = useState({ name: '', phone: '' });
+  const [formData, setFormData] = useState({ name: "", phone: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errors, setErrors] = useState({});
@@ -31,41 +34,54 @@ const App = () => {
     setIsVisible(true);
   }, []);
 
+  // Load saved theme preference
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("darkMode");
+    if (savedTheme) {
+      setIsDarkMode(JSON.parse(savedTheme));
+    }
+  }, []);
+
+  // Save theme preference
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
+
   const handleSurveySelect = (survey) => {
     setSelectedSurvey(survey);
-    
+
     // For BitLabs, go directly to survey list page without user info
-    if (survey.id === 'bitlabs') {
-      setCurrentPage('bitlabs');
+    if (survey.id === "bitlabs") {
+      setCurrentPage("bitlabs");
     } else {
-      setCurrentPage('userInfo');
+      setCurrentPage("userInfo");
     }
     setErrors({});
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     // Clear error for this field when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleSubmit = async () => {
     const newErrors = validateForm(formData);
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const newParticipant = {
       id: Date.now(),
       name: formData.name.trim(),
@@ -73,27 +89,27 @@ const App = () => {
       surveyTitle: selectedSurvey.title,
       surveyId: selectedSurvey.id,
       submissionDate: new Date().toISOString(),
-      status: 'Completed'
+      status: "Completed",
     };
-    
-    setParticipants(prev => [...prev, newParticipant]);
+
+    setParticipants((prev) => [...prev, newParticipant]);
     setIsSubmitting(false);
     setShowSuccess(true);
-    
+
     // Auto redirect after success message
     setTimeout(() => {
-      if (selectedSurvey.type === 'iframe') {
-        if (selectedSurvey.url === 'cpx-research') {
-          setCurrentPage('cpxFrame');
-        } else if (selectedSurvey.url === 'theoremreach') {
-          setCurrentPage('theoremreach');
+      if (selectedSurvey.type === "iframe") {
+        if (selectedSurvey.url === "cpx-research") {
+          setCurrentPage("cpxFrame");
+        } else if (selectedSurvey.url === "theoremreach") {
+          setCurrentPage("theoremreach");
         }
-        setShowSuccess(false);        
+        setShowSuccess(false);
       } else {
-        setCurrentPage('redirect');
+        setCurrentPage("redirect");
         setTimeout(() => {
-          window.open(selectedSurvey.url, '_blank');
-          setCurrentPage('home');
+          window.open(selectedSurvey.url, "_blank");
+          setCurrentPage("home");
           setShowSuccess(false);
         }, 2000);
       }
@@ -105,18 +121,15 @@ const App = () => {
       isDarkMode,
       participants,
       setCurrentPage,
-      isVisible
+      isVisible,
     };
 
     switch (currentPage) {
-      case 'home':
+      case "home":
         return (
-          <HomePage 
-            {...commonProps}
-            handleSurveySelect={handleSurveySelect}
-          />
+          <HomePage {...commonProps} handleSurveySelect={handleSurveySelect} />
         );
-      case 'userInfo':
+      case "userInfo":
         return (
           <UserInfoPage
             {...commonProps}
@@ -129,51 +142,54 @@ const App = () => {
             handleSubmit={handleSubmit}
           />
         );
-      case 'cpxFrame':
+      case "cpxFrame":
+        return <CPXFramePage {...commonProps} />;
+      case "theoremreach":
+        return <TheoremReachFramePage {...commonProps} />;
+      case "bitlabs":
+        return <BitLabsSurveyPage {...commonProps} />;
+      case "clickone-landing":
         return (
-          <CPXFramePage 
-            {...commonProps}
+          <ClickOneLandingPage
+            isDarkMode={isDarkMode}
+            setCurrentPage={setCurrentPage}
           />
         );
-      case 'theoremreach':
+      case "admin-login":
         return (
-          <TheoremReachFramePage 
-            {...commonProps}
-          />
+          <AdminLogin isDarkMode={isDarkMode} setCurrentPage={setCurrentPage} />
         );
-      case 'bitlabs':
+      case "AddVideos":
+        // يمكنك إضافة صفحة إدارة الفيديوهات هنا لاحقاً
+        return <AddVideos isDarkMode={isDarkMode} setCurrentPage={setCurrentPage} />;
+      case "redirect":
         return (
-          <BitLabsSurveyPage
-            {...commonProps}
-          />
-        );
-      case 'redirect':
-        return (
-          <RedirectPage 
+          <RedirectPage
             isDarkMode={isDarkMode}
             selectedSurvey={selectedSurvey}
           />
         );
-      case 'data':
-        return (
-          <DataPage 
-            {...commonProps}
-          />
-        );
+      case "data":
+        return <DataPage {...commonProps} />;
       default:
         return (
-          <HomePage 
-            {...commonProps}
-            handleSurveySelect={handleSurveySelect}
-          />
+          <HomePage {...commonProps} handleSurveySelect={handleSurveySelect} />
         );
     }
   };
 
   return (
-    <div className="font-sans">
-      <DarkModeToggle isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-      {renderCurrentPage()}
+    <div className={`font-sans min-h-screen ${isDarkMode ? "dark" : ""}`}>
+      {/* Fixed Navbar */}
+      <Navbar
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+
+      {/* Main Content with padding for navbar */}
+      <main className="pt-16 md:pt-20">{renderCurrentPage()}</main>
     </div>
   );
 };
