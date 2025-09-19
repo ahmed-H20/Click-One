@@ -26,7 +26,7 @@ import HorizontalAdsBanner, {
 import { surveyPlatforms } from "../../data/surveyPlatforms";
 import { getTheme } from "../../config/theme";
 import BannerAd from "../ads/BannerAdd";
-import BannerVerselAd from "../ads/VerselBannerAd";
+import Banner from "../ads/AdsBanner";
 
 const HomePage = ({
   isDarkMode,
