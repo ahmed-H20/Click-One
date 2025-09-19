@@ -126,7 +126,6 @@ const HomePage = ({
           />
         </div>
 
-        <BannerAd />
         
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
@@ -197,6 +196,9 @@ const HomePage = ({
             showLabel={false}
           />
         </div>
+
+        <BannerAd />
+
 
         <Banner />
 
