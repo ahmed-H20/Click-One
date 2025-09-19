@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Info, ExternalLink } from 'lucide-react';
 import { getTheme } from '../../config/theme';
+import BannerAd from './BannerAdd';
+import BannerAdBig from './Banner782Ad';
 
 const HorizontalAdsBanner = ({ 
   isDarkMode, 
@@ -79,60 +81,19 @@ const HorizontalAdsBanner = ({
                 data-full-width-responsive="false"
               ></ins>
             </div>
-
+            
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                <div 
-                  key={index}
-                  className={`flex-shrink-0 w-72 h-16 ${isDarkMode 
-                    ? 'bg-gradient-to-r from-gray-700 to-gray-800' 
-                    : 'bg-gradient-to-r from-gray-50 to-white'
-                  } rounded-lg border border-opacity-20 flex items-center justify-center group hover:shadow-lg transition-shadow duration-300`}
-                >
-                  <div className="text-center">
-                    <div className="text-2xl mb-1">
-                      {['📱', '💻', '🎯', '🛒', '✨'][index]}
-                    </div>
-                    <p className={`${theme.textMuted} text-xs font-medium`}>
-                      {[
-                        'تطبيقات ذكية',
-                        'تقنية حديثة', 
-                        'عروض خاصة',
-                        'تسوق آمن',
-                        'خدمات مميزة'
-                      ][index]}
-                    </p>
-                  </div>
-                </div>
+                <BannerAdBig in={index} key={`big-${index}`} /> 
+                  
               ))}
             </div>
 
             {/* Duplicate for seamless loop */}
             <div className="flex items-center space-x-8 px-8">
               {[...Array(5)].map((_, index) => (
-                <div 
-                  key={`duplicate-${index}`}
-                  className={`flex-shrink-0 w-72 h-16 ${isDarkMode 
-                    ? 'bg-gradient-to-r from-gray-700 to-gray-800' 
-                    : 'bg-gradient-to-r from-gray-50 to-white'
-                  } rounded-lg border border-opacity-20 flex items-center justify-center group hover:shadow-lg transition-shadow duration-300`}
-                >
-                  <div className="text-center">
-                    <div className="text-2xl mb-1">
-                      {['🎮', '📚', '🎵', '🏋️', '🍕'][index]}
-                    </div>
-                    <p className={`${theme.textMuted} text-xs font-medium`}>
-                      {[
-                        'ألعاب مسلية',
-                        'كتب إلكترونية', 
-                        'موسيقى عالمية',
-                        'لياقة بدنية',
-                        'طعام شهي'
-                      ][index]}
-                    </p>
-                  </div>
-                </div>
+                <BannerAdBig in={index} key={`big-${index}`} />
               ))}
             </div>
           </div>
@@ -225,8 +186,16 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
               animationTimingFunction: 'linear',
               animationIterationCount: 'infinite'
             }}
-          >
-            {/* AdSense Mobile Banner */}
+          >     
+            {/* Fallback compact ads */}
+            <div className="flex items-center space-x-4 px-4">
+              {[...Array(5)].map((_, index) => (
+                // <BannerAd key={index} in={index} />  
+                <h1 key={index}>ad</h1>              
+              ))}
+            </div>
+
+            {/* AdSense Mobile Banner */}            
             <div className="flex items-center px-4">
               <ins
                 className="adsbygoogle"
@@ -242,27 +211,8 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
                 data-full-width-responsive="false"
               ></ins>
             </div>
-
-            {/* Fallback compact ads */}
-            <div className="flex items-center space-x-4 px-4">
-              {[...Array(8)].map((_, index) => (
-                <div 
-                  key={index}
-                  className={`flex-shrink-0 w-40 h-12 ${isDarkMode 
-                    ? 'bg-gray-800' 
-                    : 'bg-gray-100'
-                  } rounded border flex items-center justify-center`}
-                >
-                  <div className="text-center">
-                    <div className="text-sm mb-0.5">
-                      {['🎁', '💎', '⭐', '🔥', '💰', '🎯', '✨', '🚀'][index]}
-                    </div>
-                    <p className={`${theme.textMuted} text-xs`}>إعلان</p>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
+           
 
           {/* Fade gradients */}
           <div className={`absolute left-0 top-0 w-8 h-full bg-gradient-to-r ${
