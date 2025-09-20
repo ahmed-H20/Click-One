@@ -30,51 +30,71 @@ import {
   X,
   Calendar,
   Globe,
+  Loader
 } from "lucide-react";
 import { getTheme } from "../../config/theme";
 import FloatingParticles from "../common/FloatingParticles";
+import { videoService } from "../../services/videoService";
 
 const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
   const theme = getTheme(isDarkMode);
   const [isVisible, setIsVisible] = useState(false);
   const [activeVideo, setActiveVideo] = useState(null);
-
-  useEffect(() => {
-    setIsVisible(true);
-    // قراءة البيانات من localStorage عند تحميل المكون
-    const storedVideos = localStorage.getItem("videoList");
-    if (storedVideos) {
-      try {
-        const parsedVideos = JSON.parse(storedVideos);
-        setVideos(parsedVideos);
-      } catch (e) {
-        console.error("Failed to parse videos from localStorage", e);
-        // في حالة الخطأ، نعود إلى القائمة الافتراضية
-        setVideos(defaultVideos);
-      }
-    }
-  }, []);
+  const [isLoadingVideos, setIsLoadingVideos] = useState(true);
+  const [videosError, setVideosError] = useState(null);
 
   const defaultVideos = [
     {
       id: 1,
-      title: "كيفية التسجيل في Click One",
-      thumbnail: "https://img.youtube.com/vi/VIDEO_ID_1/maxresdefault.jpg",
-      url: "https://www.youtube.com/watch?v=VIDEO_ID_1",
+      name: "كيفية التسجيل في Click One",
+      link: "https://www.youtube.com/watch?v=VIDEO_ID_1",
     },
     {
       id: 2,
-      title: "شرح نظام النقاط والأرباح",
-      thumbnail: "https://img.youtube.com/vi/VIDEO_ID_2/maxresdefault.jpg",
-      url: "https://www.youtube.com/watch?v=VIDEO_ID_2",
+      name: "شرح نظام النقاط والأرباح",
+      link: "https://www.youtube.com/watch?v=VIDEO_ID_2",
     },
     {
       id: 3,
-      title: "طريقة السحب والاستبدال",
-      thumbnail: "https://img.youtube.com/vi/VIDEO_ID_3/maxresdefault.jpg",
-      url: "https://www.youtube.com/watch?v=VIDEO_ID_3",
+      name: "طريقة السحب والاستبدال",
+      link: "https://www.youtube.com/watch?v=VIDEO_ID_3",
     },
   ];
+
+  // جلب آخر مجموعة فيديوهات من قاعدة البيانات
+  const fetchLatestVideos = async () => {
+    try {
+      setIsLoadingVideos(true);
+      setVideosError(null);
+
+      const response = await videoService.getLastVideoCollection();
+
+      if (
+        response.success &&
+        response.data &&
+        response.data.videos &&
+        response.data.videos.length > 0
+      ) {
+        // استخدام الفيديوهات من قاعدة البيانات
+        setVideos(response.data.videos);
+      } else {
+        // إذا لم توجد فيديوهات، استخدام القائمة الافتراضية
+        setVideos(defaultVideos);
+      }
+    } catch (error) {
+      console.error("Error fetching videos from database:", error);
+      setVideosError("فشل في تحميل الفيديوهات من قاعدة البيانات");
+      // في حالة الخطأ، نستخدم القائمة الافتراضية
+      setVideos(defaultVideos);
+    } finally {
+      setIsLoadingVideos(false);
+    }
+  };
+
+  useEffect(() => {
+    setIsVisible(true);
+    fetchLatestVideos();
+  }, []);
 
   const [videos, setVideos] = useState(defaultVideos);
 
@@ -445,87 +465,141 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
               </p>
             </div>
 
+            {/* Loading State */}
+            {isLoadingVideos && (
+              <div className="flex justify-center items-center py-12">
+                <Loader className="animate-spin text-blue-500" size={48} />
+                <span className={`mr-3 ${theme.textSecondary}`}>
+                  جاري تحميل الفيديوهات...
+                </span>
+              </div>
+            )}
+
+            {/* Error State */}
+            {videosError && !isLoadingVideos && (
+              <div className="text-center py-8">
+                <p className="text-red-500 mb-4">{videosError}</p>
+                <button
+                  onClick={fetchLatestVideos}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  إعادة المحاولة
+                </button>
+              </div>
+            )}
+
             {/* Videos Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              {videos.map((video, index) => {
-                // التحقق من وجود الرابط أولاً
-                if (!video.link) {
-                  console.error("Video link is missing for:", video);
-                  return null;
-                }
+            {!isLoadingVideos && !videosError && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                {videos.map((video, index) => {
+                  // التحقق من وجود الرابط
+                  if (!video.link) {
+                    console.error("Video link is missing for:", video);
+                    return null;
+                  }
 
-                // التحقق من نوع الفيديو
-                const isYouTube =
-                  video.link.includes("youtube.com") ||
-                  video.link.includes("youtu.be");
-                const isMP4 = video.link.endsWith(".mp4");
+                  // التحقق من نوع الفيديو
+                  const isYouTube =
+                    video.link.includes("youtube.com") ||
+                    video.link.includes("youtu.be");
+                  const isMP4 = video.link.match(/\.(mp4|webm|ogg)$/i);
 
-                // استخراج معرّف الفيديو لـ YouTube
-                const videoId = isYouTube
-                  ? video.link.split("v=")[1]?.split("&")[0] ||
-                    video.link.split("youtu.be/")[1]?.split("?")[0]
-                  : null;
+                  // استخراج معرّف الفيديو لـ YouTube
+                  const extractYouTubeId = (url) => {
+                    const patterns = [
+                      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+                      /youtube\.com\/embed\/([^&\n?#]+)/,
+                      /youtube\.com\/v\/([^&\n?#]+)/,
+                    ];
 
-                const thumbnailUrl = isYouTube
-                  ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-                  : null;
+                    for (const pattern of patterns) {
+                      const match = url.match(pattern);
+                      if (match) return match[1];
+                    }
+                    return null;
+                  };
 
-                return (
-                  <div
-                    key={video.link || index}
-                    className={`transform transition-all duration-700 hover:-translate-y-2 ${
-                      isVisible
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-10 opacity-0"
-                    }`}
-                    style={{ transitionDelay: `${index * 150}ms` }}
-                  >
+                  const videoId = isYouTube
+                    ? extractYouTubeId(video.link)
+                    : null;
+
+                  return (
                     <div
-                      className={`relative group ${theme.cardBg} backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300`}
+                      key={video._id || video.id || index}
+                      className={`transform transition-all duration-700 hover:-translate-y-2 ${
+                        isVisible
+                          ? "translate-y-0 opacity-100"
+                          : "translate-y-10 opacity-0"
+                      }`}
+                      style={{ transitionDelay: `${index * 150}ms` }}
                     >
-                      {/* Video Container */}
-                      <div className="relative aspect-video bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
-                        {isYouTube ? (
-                          // YouTube Embed
-                          <iframe
-                            src={`https://www.youtube.com/embed/${videoId}`}
-                            title={video.name}
-                            className="w-full h-full"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          />
-                        ) : isMP4 ? (
-                          // MP4 Video Player
-                          <video
-                            className="w-full h-full object-cover"
-                            controls
-                            poster={video.thumbnail} // يمكنك إضافة صورة مصغرة إذا كانت متاحة
+                      <div
+                        className={`relative group ${theme.cardBg} backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300`}
+                      >
+                        {/* Video Container */}
+                        <div className="relative aspect-video bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
+                          {isYouTube && videoId ? (
+                            // YouTube Embed
+                            <iframe
+                              src={`https://www.youtube.com/embed/${videoId}`}
+                              title={video.name}
+                              className="w-full h-full"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          ) : isMP4 ? (
+                            // MP4 Video Player
+                            <video
+                              className="w-full h-full object-cover"
+                              controls
+                              preload="metadata"
+                            >
+                              <source src={video.link} type="video/mp4" />
+                              <source src={video.link} type="video/webm" />
+                              <source src={video.link} type="video/ogg" />
+                              متصفحك لا يدعم تشغيل الفيديو.
+                            </video>
+                          ) : (
+                            // External video link
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-gray-800 p-4">
+                              <Play className="text-gray-400 mb-4" size={48} />
+                              <p className="text-gray-300 mb-2">فيديو خارجي</p>
+                              <a
+                                href={video.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                              >
+                                مشاهدة الفيديو
+                              </a>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Video Title */}
+                        <div className="p-5">
+                          <h3
+                            className={`${theme.textPrimary} font-bold text-lg group-hover:text-blue-600 transition-colors`}
                           >
-                            <source src={video.link} type="video/mp4" />
-                            متصفحك لا يدعم تشغيل الفيديو.
-                          </video>
-                        ) : (
-                          // Default thumbnail for other video types
-                          <div className="w-full h-full flex items-center justify-center bg-gray-800">
-                            <p className="text-white">نوع الفيديو غير مدعوم</p>
+                            {video.name}
+                          </h3>
+                        </div>
+
+                        {/* Play Button Overlay (للفيديوهات الخارجية) */}
+                        {!isYouTube && !isMP4 && (
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div className="bg-blue-600 bg-opacity-80 rounded-full p-4 transform group-hover:scale-110 transition-transform">
+                              <Play className="text-white" size={32} />
+                            </div>
                           </div>
                         )}
                       </div>
-
-                      {/* Video Title */}
-                      <div className="p-5">
-                        <h3
-                          className={`${theme.textPrimary} font-bold text-lg group-hover:text-blue-600 transition-colors`}
-                        >
-                          {video.name}
-                        </h3>
-                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -1910,21 +1984,24 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
         <section className="py-16 relative overflow-hidden">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h3 className="text-3xl md:text-4xl font-bold text-purple-600 mb-4">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-purple-600 mb-4">
                 رحلتك مع Click One
               </h3>
-              <p className={`${theme.textSecondary} text-lg`}>
+              <p className={`${theme.textSecondary} text-base sm:text-lg px-4`}>
                 خطوات بسيطة لتحقيق أقصى استفادة
               </p>
             </div>
 
-            {/* Timeline */}
+            {/* Timeline - Mobile & Desktop */}
             <div className="relative max-w-4xl mx-auto">
-              {/* الخط الرئيسي */}
-              <div className="absolute right-1/2 transform translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 rounded-full"></div>
+              {/* الخط الرئيسي - للشاشات الكبيرة */}
+              <div className="hidden md:block absolute right-1/2 transform translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 rounded-full"></div>
+
+              {/* الخط الرئيسي - للموبايل */}
+              <div className="md:hidden absolute right-8 top-0 w-1 h-full bg-gradient-to-b from-blue-500 via-purple-500 to-pink-500 rounded-full"></div>
 
               {/* النقاط */}
-              <div className="space-y-12">
+              <div className="space-y-8 md:space-y-12">
                 {[
                   {
                     title: "اجمع النقاط",
@@ -1956,66 +2033,121 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                     side: "left",
                   },
                 ].map((step, index) => (
-                  <div
-                    key={index}
-                    className={`relative flex items-center ${
-                      step.side === "right" ? "justify-start" : "justify-end"
-                    }`}
-                  >
+                  <div key={index} className="relative">
+                    {/* Desktop Layout */}
                     <div
-                      className={`w-1/2 px-5 ${
-                        step.side === "right"
-                          ? "pr-12 text-left"
-                          : "pl-12 text-right"
-                      } transform transition-all duration-700 hover:scale-105 ${
-                        isVisible
-                          ? "translate-x-0 opacity-100"
-                          : step.side === "right"
-                          ? "-translate-x-10 opacity-0"
-                          : "translate-x-10 opacity-0"
+                      className={`hidden md:flex items-center ${
+                        step.side === "right" ? "justify-start" : "justify-end"
                       }`}
-                      style={{ transitionDelay: `${index * 200}ms` }}
                     >
                       <div
-                        className={`${theme.cardBg} backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300`}
+                        className={`w-1/2 ${
+                          step.side === "right"
+                            ? "pr-12 text-left"
+                            : "pl-12 text-right"
+                        } transform transition-all duration-700 hover:scale-105 ${
+                          isVisible
+                            ? "translate-x-0 opacity-100"
+                            : step.side === "right"
+                            ? "-translate-x-10 opacity-0"
+                            : "translate-x-10 opacity-0"
+                        }`}
+                        style={{ transitionDelay: `${index * 200}ms` }}
                       >
                         <div
-                          className={`flex items-center gap-4 ${
-                            step.side === "left" ? "flex-row-reverse" : ""
-                          }`}
+                          className={`${theme.cardBg} backdrop-blur-xl rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300`}
                         >
                           <div
-                            className={`p-3 rounded-xl bg-gradient-to-br ${step.color} bg-opacity-20`}
-                          >
-                            <span className="text-3xl">{step.icon}</span>
-                          </div>
-                          <div
-                            className={`flex-1 ${
-                              step.side === "left" ? "text-right" : ""
+                            className={`flex items-center gap-4 ${
+                              step.side === "left" ? "flex-row-reverse" : ""
                             }`}
                           >
-                            <h4
-                              className={`text-xl font-bold ${theme.textPrimary} mb-2`}
+                            <div
+                              className={`p-3 rounded-xl bg-gradient-to-br ${step.color} bg-opacity-20 flex-shrink-0`}
                             >
-                              {step.title}
-                            </h4>
-                            <p className={`${theme.textSecondary} text-sm`}>
-                              {step.description}
-                            </p>
+                              <span className="text-3xl">{step.icon}</span>
+                            </div>
+                            <div
+                              className={`flex-1 ${
+                                step.side === "left" ? "text-right" : ""
+                              }`}
+                            >
+                              <h4
+                                className={`text-xl font-bold ${theme.textPrimary} mb-2`}
+                              >
+                                {step.title}
+                              </h4>
+                              <p className={`${theme.textSecondary} text-sm`}>
+                                {step.description}
+                              </p>
+                            </div>
                           </div>
+                        </div>
+                      </div>
+
+                      {/* نقطة على الخط - Desktop */}
+                      <div className="absolute right-1/2 transform translate-x-1/2">
+                        <div
+                          className={`relative w-8 h-8 bg-gradient-to-br ${step.color} rounded-full animate-pulse`}
+                        >
+                          <div className="absolute inset-1 bg-white dark:bg-gray-900 rounded-full"></div>
+                          <div
+                            className={`absolute inset-2 bg-gradient-to-br ${step.color} rounded-full`}
+                          ></div>
                         </div>
                       </div>
                     </div>
 
-                    {/* نقطة على الخط */}
-                    <div className="absolute right-1/2 transform translate-x-1/2">
-                      <div
-                        className={`relative w-8 h-8 bg-gradient-to-br ${step.color} rounded-full animate-pulse`}
-                      >
-                        <div className="absolute inset-1 bg-white dark:bg-gray-900 rounded-full"></div>
+                    {/* Mobile Layout */}
+                    <div
+                      className={`md:hidden flex items-start gap-4 ${
+                        isVisible
+                          ? "translate-x-0 opacity-100"
+                          : "translate-x-10 opacity-0"
+                      } transform transition-all duration-700`}
+                      style={{ transitionDelay: `${index * 200}ms` }}
+                    >
+                      {/* نقطة على الخط - Mobile */}
+                      <div className="relative flex-shrink-0 mt-2">
                         <div
-                          className={`absolute inset-2 bg-gradient-to-br ${step.color} rounded-full`}
-                        ></div>
+                          className={`relative w-6 h-6 bg-gradient-to-br ${step.color} rounded-full animate-pulse`}
+                        >
+                          <div className="absolute inset-1 bg-white dark:bg-gray-900 rounded-full"></div>
+                          <div
+                            className={`absolute inset-2 bg-gradient-to-br ${step.color} rounded-full`}
+                          ></div>
+                        </div>
+                        {/* خط واصل */}
+                        {index < 3 && (
+                          <div className="absolute top-8 right-2.5 w-1 h-16 bg-gradient-to-b from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700"></div>
+                        )}
+                      </div>
+
+                      {/* محتوى الخطوة - Mobile */}
+                      <div className="flex-1 mr-4">
+                        <div
+                          className={`${theme.cardBg} backdrop-blur-xl rounded-xl p-4 border border-white/10`}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div
+                              className={`p-2 rounded-lg bg-gradient-to-br ${step.color} bg-opacity-20 flex-shrink-0`}
+                            >
+                              <span className="text-2xl">{step.icon}</span>
+                            </div>
+                            <div className="flex-1">
+                              <h4
+                                className={`text-lg font-bold ${theme.textPrimary} mb-1`}
+                              >
+                                {step.title}
+                              </h4>
+                              <p
+                                className={`${theme.textSecondary} text-xs sm:text-sm`}
+                              >
+                                {step.description}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2024,18 +2156,15 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
             </div>
 
             {/* Call to Action */}
-            <div className="text-center mt-16">
+            <div className="text-center mt-12 md:mt-16 px-4">
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="group relative inline-flex items-center gap-3"
+                className="group relative inline-flex items-center gap-3 w-full sm:w-auto"
               >
                 <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-lg opacity-50 group-hover:opacity-80 transition-opacity duration-300"></div>
-                <div className="relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full hover:shadow-2xl transition-all duration-300">
-                  <span>ابدأ رحلتك الآن</span>
-                  <ArrowRight
-                    className="inline-block mr-2 group-hover:translate-x-1 transition-transform"
-                    size={20}
-                  />
+                <div className="relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold rounded-full hover:shadow-2xl transition-all duration-300 flex items-center justify-center">
+                  <span className="text-base sm:text-lg">ابدأ رحلتك الآن</span>
+                  <span className="mr-2 text-lg">←</span>
                 </div>
               </button>
             </div>

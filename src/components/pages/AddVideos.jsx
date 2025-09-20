@@ -1,4 +1,3 @@
-// src/components/pages/AddVideos.jsx
 import React, { useState, useEffect } from "react";
 import {
   Link as LinkIcon,
@@ -10,6 +9,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { getTheme } from "../../config/theme";
+import { videoService } from "../../services/videoService";
 
 const AddVideos = ({ isDarkMode, setCurrentPage }) => {
   const theme = getTheme(isDarkMode);
@@ -52,14 +52,26 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
     }
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      localStorage.setItem("videoList", JSON.stringify(validVideos));
-      setSuccess("تم حفظ الفيديوهات بنجاح!");
-      setTimeout(() => {
-        setCurrentPage("clickone-landing");
-      }, 1500);
+      // استخدام createVideoCollection بدلاً من createVideos
+      const response = await videoService.createVideoCollection(validVideos);
+
+      if (response.success) {
+        setSuccess("تم حفظ الفيديوهات بنجاح!");
+
+        // مسح الحقول
+        setVideos([
+          { link: "", name: "" },
+          { link: "", name: "" },
+          { link: "", name: "" },
+        ]);
+
+        setTimeout(() => {
+          setCurrentPage("clickone-landing");
+        }, 1500);
+      }
     } catch (err) {
-      setError("حدث خطأ أثناء حفظ البيانات.");
+      setError(err.message || "حدث خطأ أثناء حفظ البيانات.");
+    } finally {
       setIsLoading(false);
     }
   };
@@ -215,7 +227,7 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
           </div>
         </div>
       </div>
-      <style jsx>{`
+      <style>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
