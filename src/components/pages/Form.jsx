@@ -4,7 +4,7 @@ import { Phone, User, Check, X, Zap, Loader2 } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
 import { getTheme } from '../../config/theme';
 
-export const UserInfoPage = ({
+export const Form = ({
   isDarkMode,
   selectedSurvey,
   formData,
@@ -68,9 +68,7 @@ export const UserInfoPage = ({
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name.trim());
       formDataToSend.append('phone', formData.phone.trim());
-      formDataToSend.append('survey', selectedSurvey?.title || '');
       formDataToSend.append('timestamp', new Date().toISOString());
-      formDataToSend.append('registration_type', 'one_time'); // Mark as one-time registration
 
       const response = await fetch(scriptURL, {
         method: 'POST',
@@ -143,7 +141,7 @@ export const UserInfoPage = ({
             </div>
             <h2 className={`text-3xl font-bold ${theme.textPrimary} mb-4 animate-pulse`}>نجح! 🎊</h2>
             <p className={`${theme.textSecondary} mb-4`}>تم حفظ معلوماتك بنجاح</p>
-            <p className="text-sm text-green-400 animate-pulse">جاري التحويل للاستطلاع... ⚡</p>
+            <p className="text-sm text-green-400 animate-pulse">جاري التحويل ... ⚡</p>
             <div className="mt-4">
               <Loader2 className="animate-spin mx-auto text-blue-500" size={32} />
             </div>
@@ -166,22 +164,9 @@ export const UserInfoPage = ({
           <div className="relative group">
             <div className={`absolute -inset-1 bg-gradient-to-r ${theme.glowBorder} rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500`}></div>
             
-            <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border`}>
-              <div className="text-center mb-8">
-                <div className="text-4xl mb-4 animate-bounce">🎯</div>
-                <h2 className={`text-3xl font-bold ${theme.textPrimary} mb-4`}>تسجيل لمرة واحدة</h2>
-                <p className={`${theme.textSecondary} mb-2`}>سجل مرة واحدة فقط للوصول لجميع الاستطلاعات:</p>
-                <p className={`font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 text-lg animate-pulse`}>
-                  {selectedSurvey?.title}
-                </p>
-                <p className={`text-sm ${theme.textMuted} mt-2`}>
-                  ✨ لن تحتاج لملء النموذج مرة أخرى
-                </p>
-              </div>
-
+            <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border`}>              
               {/* Form with Google Sheets integration */}
               <form method="POST" action={scriptURL} onSubmit={handleFormSubmit} noValidate>
-              {/* <form onSubmit={handleFormSubmit} noValidate> */}
                <div className="space-y-6">
                   {/* Name Field */}
                   <div className="relative">
@@ -272,11 +257,6 @@ export const UserInfoPage = ({
                     )}
                   </div>
 
-                  {/* Hidden fields for Google Sheets */}
-                  <input type="hidden" name="survey" value={selectedSurvey?.title || ''} />
-                  <input type="hidden" name="timestamp" value={new Date().toISOString()} />
-                  <input type="hidden" name="registration_type" value="one_time" />
-
                   {/* Form Actions */}
                   <div className="flex space-x-4 pt-6">
                     <button
@@ -321,10 +301,7 @@ export const UserInfoPage = ({
                   <span className="text-red-500">*</span> جميع الحقول مطلوبة
                   <br />
                   🔒 معلوماتك محفوظة وآمنة معنا
-                  <br />
-                  {/* 📊 البيانات محفوظة في Google Sheets
-                  <br />
-                  <span className="text-green-500 font-medium">✨ تسجيل واحد لجميع الاستطلاعات</span> */}
+                  <br />                 
                 </p>
               </div>
 

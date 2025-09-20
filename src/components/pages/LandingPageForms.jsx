@@ -30,18 +30,20 @@ import {
   X,
   Calendar,
   Globe,
-  Loader
+  Loader,
+  Link
 } from "lucide-react";
 import { getTheme } from "../../config/theme";
 import FloatingParticles from "../common/FloatingParticles";
 import { videoService } from "../../services/videoService";
+import { useNavigate } from "react-router-dom";
 
 const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
   const theme = getTheme(isDarkMode);
   const [isVisible, setIsVisible] = useState(false);
-  const [activeVideo, setActiveVideo] = useState(null);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [videosError, setVideosError] = useState(null);
+  const navigate = useNavigate();
 
   const defaultVideos = [
     {
@@ -132,11 +134,11 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
     { number: 4, title: "ابدأ الربح", description: "شاهد 10 إعلانات يومياً" },
   ];
 
-  const handleVideoClick = (url) => {
-    if (url) {
-      window.open(url, "_blank");
-    }
-  };
+  // const handleVideoClick = (url) => {
+  //   if (url) {
+  //     window.open(url, "_blank");
+  //   }
+  // };
 
   return (
     <div
@@ -302,38 +304,31 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                 }`}
                 style={{ animationDelay: "0.5s" }}
               >
+
                 {/* Animated gradient border on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                  <div className="relative text-center">
+                    {/* Icon */}
+                    <Users
+                      className="mx-auto text-blue-500 mb-4 animate-bounce"
+                      size={32}
+                    />
 
-                <div className="relative text-center">
-                  {/* Icon */}
-                  <Users
-                    className="mx-auto text-blue-500 mb-4 animate-bounce"
-                    size={32}
-                  />
-
-                  <p
-                    className={`${theme.textSecondary} text-lg leading-relaxed`}
-                  >
-                    إذا كنت مشتركًا لدينا:{" "}
-                    <span className="font-semibold inline-block hover:scale-105 transition-transform">
-                      أدخل اسمك على التطبيق
-                    </span>{" "}
-                    و
-                    <span className="font-semibold inline-block hover:scale-105 transition-transform">
-                      رقمك المسجّل في Click One
-                    </span>
-                  </p>
-
-                  <div className="mt-4 inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2">
-                    <span className={`${theme.textMuted} text-sm`}>مثال:</span>
-                    <span
-                      className="text-blue-600 font-mono font-semibold"
-                      dir="ltr"
+                    <p
+                      className={`${theme.textSecondary} text-lg leading-relaxed`}
                     >
-                      078XXXXXXX
-                    </span>
-                  </div>
+                      إذا كنت مشتركًا لدينا:{" "}
+                      <span className="font-semibold inline-block hover:scale-105 transition-transform">
+                        أدخل اسمك على التطبيق
+                      </span>{" "}
+                      و
+                      <span className="font-semibold inline-block hover:scale-105 transition-transform">
+                        رقمك المسجّل في Click One
+                      </span>
+                    </p>
+                    <button onClick={() => navigate('/form')} className="mt-4 inline-flex items-center space-x-2 bg-blue-500 text-white rounded-lg px-4 py-2">
+                      <span>تسجيل</span>
+                    </button>
                 </div>
               </div>
 
