@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { Phone, User, Check, X, Zap, Loader2 } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
 import { getTheme } from '../../config/theme';
@@ -9,17 +9,14 @@ export const Form = ({
   selectedSurvey,
   formData,
   errors,
-  isSubmitting,
-  showSuccess,
   handleInputChange,
-  handleSubmit,
   setCurrentPage,
   isUserRegistered, // New prop to check if user is already registered
   setIsUserRegistered // New prop to update registration status
 }) => {
   const theme = getTheme(isDarkMode);
   const scriptURL = 'https://script.google.com/macros/s/AKfycbz_OA1zWDUmljQf51nJO57f2qFhbK89_kEX708zi80nlLCsNhpQ203Rjm6ADIlJ0YnT/exec';
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // If user is already registered, skip to survey directly
   React.useEffect(() => {
     if (isUserRegistered) {
@@ -50,6 +47,11 @@ export const Form = ({
       }
     };
 
+
+    const handleSubmit = () => {
+      setIsSubmitting(true);
+    };
+
     // Check if form is valid
     const isFormValid = () => {
       return formData.name.trim().length >= 2 && 
@@ -74,20 +76,12 @@ export const Form = ({
         method: 'POST',
         body: formDataToSend,
         mode: 'no-cors' // Important for Google Apps Script
-      });
-
-      // Since mode is 'no-cors', we won't get response data
-      // We'll assume success and mark user as registered
+      });  
       
-      // Store registration status in memory/localStorage
-      setIsUserRegistered(true);
+      
+      setIsSubmitting(false);      
+      setCurrentPage('landingForm'); // Redirect to survey page or whatever is next
 
-      localStorage.setItem("userSigned", true);
-
-      // Show success briefly then redirect to survey
-      setTimeout(() => {
-        setCurrentPage('survey'); // Redirect to actual survey page
-      }, 2000);
       
     } catch (error) {
       console.error('Error submitting to Google Sheets:', error);
@@ -122,36 +116,7 @@ export const Form = ({
            /^\+?[\d\s\-()]{10,15}$/.test(formData.phone.trim());
   };
 
-  if (showSuccess) {
     return (
-      <div className={`min-h-screen relative overflow-hidden ${theme.textPrimary}`}>
-        <FloatingParticles isDarkMode={isDarkMode} />
-        <div className={`absolute inset-0 ${theme.background}`}>
-          <div className="absolute inset-0 bg-black opacity-10"></div>
-        </div>
-        
-        <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
-          <div className="text-center transform animate-bounce">
-            <div className="relative mb-6">
-              <div className="bg-green-500 bg-opacity-20 border-green-400 rounded-full w-24 h-24 flex items-center justify-center mx-auto backdrop-blur-lg border border-opacity-30">
-                <Check size={48} className="text-green-400 animate-pulse" />
-              </div>
-              <div className="absolute -top-2 -right-2 text-2xl animate-bounce">✨</div>
-              <div className="absolute -bottom-2 -left-2 text-2xl animate-bounce" style={{animationDelay: '0.5s'}}>🎉</div>
-            </div>
-            <h2 className={`text-3xl font-bold ${theme.textPrimary} mb-4 animate-pulse`}>نجح! 🎊</h2>
-            <p className={`${theme.textSecondary} mb-4`}>تم حفظ معلوماتك بنجاح</p>
-            <p className="text-sm text-green-400 animate-pulse">جاري التحويل ... ⚡</p>
-            <div className="mt-4">
-              <Loader2 className="animate-spin mx-auto text-blue-500" size={32} />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
     <div className={`min-h-screen relative overflow-hidden ${theme.textPrimary}`}>
       <FloatingParticles isDarkMode={isDarkMode} />
       
@@ -303,23 +268,7 @@ export const Form = ({
                   🔒 معلوماتك محفوظة وآمنة معنا
                   <br />                 
                 </p>
-              </div>
-
-              {/* Loading Overlay */}
-              {isSubmitting && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-3xl flex items-center justify-center z-50">
-                  <div className="text-center">
-                    <div className="relative mb-4">
-                      <Loader2 className="animate-spin text-blue-500 mx-auto" size={48} />
-                      <div className="absolute inset-0 animate-ping">
-                        <Loader2 className="text-blue-300 opacity-75" size={48} />
-                      </div>
-                    </div>
-                    <p className="text-white font-medium">جاري تسجيل بياناتك...</p>
-                    <p className="text-blue-300 text-sm mt-2">يرجى الانتظار ⚡</p>
-                  </div>
-                </div>
-              )}
+              </div>              
             </div>
           </div>
         </div>

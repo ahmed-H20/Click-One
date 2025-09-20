@@ -23,7 +23,6 @@ export default function BannerAd() {
 
   return (
     <>
-      <h1>Banner Ad small</h1>
       <div id="banner-ad" style={{ textAlign: "center", margin: "20px 0" }}>
         {/* الإعلان هيتحمل هنا */}
       </div>
