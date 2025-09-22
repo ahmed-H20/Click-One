@@ -210,13 +210,6 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
                 data-full-width-responsive="false"
               ></ins>
             </div>
-
-            {/* Duplicate for seamless loop */}
-            <div className="flex items-center space-x-8 px-8">
-              {[...Array(5)].map((_, index) => (
-                <BannerAd in={index} key={`big-${index}`} />
-              ))}
-            </div>
           </div>
            
 
