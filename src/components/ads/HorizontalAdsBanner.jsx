@@ -190,8 +190,7 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
             {/* Fallback compact ads */}
             <div className="flex items-center space-x-4 px-4">
               {[...Array(5)].map((_, index) => (
-                <BannerAd key={index} in={index} />  
-                // <h1 key={index}>ad</h1>              
+                <BannerAd key={index} in={index} />            
               ))}
             </div>
 
@@ -210,6 +209,13 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
                 data-ad-format="banner"
                 data-full-width-responsive="false"
               ></ins>
+            </div>
+
+            {/* Duplicate for seamless loop */}
+            <div className="flex items-center space-x-8 px-8">
+              {[...Array(5)].map((_, index) => (
+                <BannerAd in={index} key={`big-${index}`} />
+              ))}
             </div>
           </div>
            
