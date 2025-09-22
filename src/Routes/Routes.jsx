@@ -6,7 +6,6 @@ import CPXFramePage from '../components/pages/CPXFramePage'
 import TheoremReachFramePage from '../components/pages/TheoremReachFramePage'
 import BitLabsSurveyPage from '../components/pages/BitLabsSurveyPage'
 import ClickOneLandingPage from '../components/pages/LandingPageForms'
-import AdminLogin from '../components/pages/AdminLogin'
 import AddVideos from '../components/pages/AddVideos'
 import { Form } from '../components/pages/Form'
 import RedirectPage from '../components/pages/RedirectPage'
@@ -23,7 +22,6 @@ const AppRoutes = (props) => {
       <Route path="/cpx-frame" element={<CPXFramePage {...props} />} />
       <Route path="/theoremreach" element={<TheoremReachFramePage {...props} />} />
       <Route path="/bitlabs" element={<BitLabsSurveyPage {...props} />} />
-      <Route path="/admin-login" element={<AdminLogin {...props} />} />
       <Route path="/add-videos" element={<AddVideos {...props} />} />
       <Route path="/redirect" element={<RedirectPage {...props} />} />
       <Route path="/data" element={<DataPage {...props} />} />
