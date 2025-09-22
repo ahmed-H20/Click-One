@@ -1,4 +1,3 @@
-
 import {
   Users,
   Zap,
@@ -27,16 +26,16 @@ import { surveyPlatforms } from "../../data/surveyPlatforms";
 import { getTheme } from "../../config/theme";
 import BannerAd from "../ads/BannerAdd";
 import Banner from "../ads/AdsBanner";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = ({
   isDarkMode,
   participants,
-  setCurrentPage,
   handleSurveySelect,
   isVisible,
 }) => {
   const theme = getTheme(isDarkMode);
-
+  const navigate = useNavigate();
   return (
     <div
       className={`min-h-screen relative overflow-hidden ${theme.textPrimary}`}
@@ -165,7 +164,7 @@ const HomePage = ({
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <button
-              onClick={() => setCurrentPage("data")}
+              onClick={() => navigate('/data')}
               className={`group relative overflow-hidden bg-gradient-to-r ${theme.buttonPrimary} text-white font-bold py-4 px-8 rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/50`}
             >
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
@@ -376,7 +375,7 @@ const HomePage = ({
                   </p>
 
                   <button
-                    onClick={() => handleSurveySelect(platform)}
+                    onClick={() => navigate('/user-info', { state: { selectedSurvey: platform } })}
                     className={`w-full group relative overflow-hidden bg-gradient-to-r ${platform.color} hover:shadow-2xl text-white py-4 px-6 rounded-2xl font-bold transform hover:scale-105 transition-all duration-300 shadow-xl`}
                   >
                     <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>

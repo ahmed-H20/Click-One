@@ -7,7 +7,7 @@ export const surveyPlatforms = [
     id: 1,
     title: "CPX Research",
     description: "اكمل الاستطلاعات واحصل على مكافآت مالية فورية",
-    url: "cpx-research",
+    url: "/cpx-frame",
     category: "استطلاعات عامة",
     estimatedTime: "5-15 دقيقة",
     reward: "مكافآت فورية",
@@ -19,7 +19,7 @@ export const surveyPlatforms = [
     id: 2,
     title: "TheoremReach",
     description: "استطلاعات متنوعة مع مكافآت مضاعفة في عطلات نهاية الأسبوع",
-    url: "theoremreach",
+    url: "/theoremreach",
     category: "استطلاعات تفاعلية",
     estimatedTime: "10-20 دقيقة",
     reward: "مكافآت مضاعفة",
@@ -30,6 +30,7 @@ export const surveyPlatforms = [
   {
     id: 'bitlabs',
     title: 'BitLabs',
+    url: '/bitlabs',
     description: 'استطلاعات عالية الجودة مع مكافآت سريعة ونظام تقييم متقدم',
     icon: '🔬',
     color: 'from-green-500 to-teal-600',

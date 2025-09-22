@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { getTheme } from "../../config/theme";
 import logo from "../../assets/clickone.jpeg";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({
   isDarkMode,
@@ -23,7 +24,7 @@ const Navbar = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
-
+  const navigate = useNavigate();
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -40,14 +41,14 @@ const Navbar = ({
   }, [currentPage]);
 
   const navItems = [
-    { id: "home", label: "Home", icon: Home, page: "home" },
     {
       id: "clickone",
       label: "ClickOne",
       icon: Award,
       page: "clickone-landing",
-    },
-    
+      path: "/clickone",
+    }, 
+    { id: "home", label: "Home", icon: Home, page: "home", path: "/" },       
   ];
 
   return (
@@ -115,7 +116,7 @@ const Navbar = ({
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setCurrentPage(item.page)}
+                onClick={() => navigate(item.path)}
                 className={`group relative px-4 py-2 transition-all duration-300 ${
                   currentPage === item.page
                     ? "text-blue-600"

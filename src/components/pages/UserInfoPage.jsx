@@ -3,6 +3,7 @@ import React from 'react';
 import { Phone, User, Check, X, Zap, Loader2 } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
 import { getTheme } from '../../config/theme';
+import { useNavigate } from 'react-router-dom';
 
 export const UserInfoPage = ({
   isDarkMode,
@@ -10,7 +11,6 @@ export const UserInfoPage = ({
   formData,
   errors,
   isSubmitting,
-  showSuccess,
   handleInputChange,
   handleSubmit,
   setCurrentPage,
@@ -19,15 +19,15 @@ export const UserInfoPage = ({
 }) => {
   const theme = getTheme(isDarkMode);
   const scriptURL = 'https://script.google.com/macros/s/AKfycbz_OA1zWDUmljQf51nJO57f2qFhbK89_kEX708zi80nlLCsNhpQ203Rjm6ADIlJ0YnT/exec';
-
+  const navigate = useNavigate();
   // If user is already registered, skip to survey directly
   React.useEffect(() => {
     if (isUserRegistered) {
       // Redirect to survey page or handle accordingly
       // This should be handled by parent component
-      setCurrentPage('survey'); // or whatever page shows the actual survey
+      // navigate(''); // Example redirect
     }
-  }, [isUserRegistered, setCurrentPage]);
+  }, [isUserRegistered]);
 
   // Handle form submission with Google Sheets integration
   const handleFormSubmit = async (e) => {
@@ -52,7 +52,7 @@ export const UserInfoPage = ({
 
     // Check if form is valid
     const isFormValid = () => {
-      return formData.name.trim().length >= 2 && 
+      return formData?.name.trim().length >= 2 && 
              /^\+?[\d\s\-()]{10,15}$/.test(formData.phone.trim());
     };
 
@@ -66,8 +66,8 @@ export const UserInfoPage = ({
       
       // Submit to Google Sheets      
       const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name.trim());
-      formDataToSend.append('phone', formData.phone.trim());
+      formDataToSend.append('name', formData?.name.trim());
+      formDataToSend.append('phone', formData?.phone.trim());
       formDataToSend.append('survey', selectedSurvey?.title || '');
       formDataToSend.append('timestamp', new Date().toISOString());
       formDataToSend.append('registration_type', 'one_time'); // Mark as one-time registration
@@ -120,8 +120,8 @@ export const UserInfoPage = ({
 
   // Check if form is valid
   const isFormValid = () => {
-    return formData.name.trim().length >= 2 && 
-           /^\+?[\d\s\-()]{10,15}$/.test(formData.phone.trim());
+    return formData?.name.trim().length >= 2 && 
+           /^\+?[\d\s\-()]{10,15}$/.test(formData?.phone.trim());
   };
 
   if (showSuccess) {
@@ -196,7 +196,7 @@ export const UserInfoPage = ({
                       id="name"
                       type="text"
                       name="name"
-                      value={formData.name}
+                      value={formData?.name}
                       onChange={handleInputChange}
                       required
                       minLength="2"
@@ -205,22 +205,22 @@ export const UserInfoPage = ({
                       className={`w-full px-4 py-4 ${theme.input} backdrop-blur-lg border rounded-2xl focus:ring-2 transition-all duration-300 ${
                         isSubmitting
                           ? 'opacity-50 cursor-not-allowed bg-gray-100'
-                          : errors.name 
-                          ? 'border-red-500 bg-red-500 bg-opacity-10 focus:ring-red-500' 
-                          : formData.name.trim() && !validateField('name', formData.name)
+                          : errors?.name
+                          ? 'border-red-500 bg-red-500 bg-opacity-10 focus:ring-red-500'
+                          : formData?.name.trim() && !validateField('name', formData?.name)
                           ? 'border-green-500 bg-green-500 bg-opacity-10 focus:ring-green-500'
                           : 'focus:ring-blue-500'
                       }`}
                       placeholder="أدخل اسمك الكامل"
                       autoComplete="name"
                     />
-                    {errors.name && (
+                    {errors?.name && (
                       <p className="text-red-500 text-sm mt-2 animate-pulse flex items-center">
                         <X size={14} className="mr-1" />
-                        {errors.name}
+                        {errors?.name}
                       </p>
                     )}
-                    {formData.name.trim() && !errors.name && !validateField('name', formData.name) && (
+                    {formData?.name.trim() && !errors?.name && !validateField('name', formData?.name) && (
                       <p className="text-green-500 text-sm mt-2 flex items-center">
                         <Check size={14} className="mr-1" />
                         الاسم صحيح ✓
@@ -241,7 +241,7 @@ export const UserInfoPage = ({
                       id="phone"
                       type="tel"
                       name="phone"
-                      value={formData.phone}
+                      value={formData?.phone}
                       onChange={handleInputChange}
                       required
                       pattern="^\+?[\d\s\-()]{10,15}$"
@@ -249,22 +249,22 @@ export const UserInfoPage = ({
                       className={`w-full px-4 py-4 ${theme.input} backdrop-blur-lg border rounded-2xl focus:ring-2 transition-all duration-300 ${
                         isSubmitting
                           ? 'opacity-50 cursor-not-allowed bg-gray-100'
-                          : errors.phone 
-                          ? 'border-red-500 bg-red-500 bg-opacity-10 focus:ring-red-500' 
-                          : formData.phone.trim() && !validateField('phone', formData.phone)
+                          : errors?.phone 
+                          ? 'border-red-500 bg-red-500 bg-opacity-10 focus:ring-red-500'
+                          : formData?.phone.trim() && !validateField('phone', formData?.phone)
                           ? 'border-green-500 bg-green-500 bg-opacity-10 focus:ring-green-500'
                           : 'focus:ring-blue-500'
                       }`}
                       placeholder="أدخل رقم هاتفك (مثال: +1234567890)"
                       autoComplete="tel"
                     />
-                    {errors.phone && (
+                    {errors?.phone && (
                       <p className="text-red-500 text-sm mt-2 animate-pulse flex items-center">
                         <X size={14} className="mr-1" />
-                        {errors.phone}
+                        {errors?.phone}
                       </p>
                     )}
-                    {formData.phone.trim() && !errors.phone && !validateField('phone', formData.phone) && (
+                    {formData?.phone.trim() && !errors?.phone && !validateField('phone', formData?.phone) && (
                       <p className="text-green-500 text-sm mt-2 flex items-center">
                         <Check size={14} className="mr-1" />
                         رقم الهاتف صحيح ✓
@@ -281,7 +281,7 @@ export const UserInfoPage = ({
                   <div className="flex space-x-4 pt-6">
                     <button
                       type="button"
-                      onClick={() => setCurrentPage('home')}
+                      onClick={() => navigate(selectedSurvey.url)}
                       disabled={isSubmitting}
                       className={`flex-1 py-4 px-6 bg-gradient-to-r ${theme.buttonSecondary} text-white border rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
                         isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
