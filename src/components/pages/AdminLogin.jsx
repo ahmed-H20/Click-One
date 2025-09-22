@@ -138,7 +138,6 @@ const AdminLogin = ({ isDarkMode, setCurrentPage }) => {
                     } border ${
                       isDarkMode ? "border-gray-600" : "border-gray-300"
                     } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:border-blue-400`}
-                    placeholder="admin@example.com"
                     required
                     disabled={isLoading}
                   />

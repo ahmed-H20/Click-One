@@ -12,6 +12,7 @@ import BitLabsSurveyPage from "./components/pages/BitLabsSurveyPage";
 import ClickOneLandingPage from "./components/pages/LandingPageForms";
 import AdminLogin from "./components/pages/AdminLogin";
 import AddVideos from "./components/pages/AddVideos";
+import { Form } from "./components/pages/Form";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState("home");
@@ -142,6 +143,26 @@ const App = () => {
             handleSubmit={handleSubmit}
           />
         );
+      case "landingForm":
+        return(
+          <ClickOneLandingPage
+            isDarkMode={isDarkMode}
+            setCurrentPage={setCurrentPage}
+          />
+        );
+      case "form":
+        return (
+          <Form
+            {...commonProps}
+            selectedSurvey={selectedSurvey}
+            formData={formData}
+            errors={errors}
+            isSubmitting={isSubmitting}
+            showSuccess={showSuccess}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+          />
+        );  
       case "cpxFrame":
         return <CPXFramePage {...commonProps} />;
       case "theoremreach":

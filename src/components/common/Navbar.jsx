@@ -47,6 +47,7 @@ const Navbar = ({
       icon: Award,
       page: "clickone-landing",
     },
+    
   ];
 
   return (

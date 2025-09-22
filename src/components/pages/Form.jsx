@@ -1,25 +1,22 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { Phone, User, Check, X, Zap, Loader2 } from 'lucide-react';
 import FloatingParticles from '../common/FloatingParticles';
 import { getTheme } from '../../config/theme';
 
-export const UserInfoPage = ({
+export const Form = ({
   isDarkMode,
   selectedSurvey,
   formData,
   errors,
-  isSubmitting,
-  showSuccess,
   handleInputChange,
-  handleSubmit,
   setCurrentPage,
   isUserRegistered, // New prop to check if user is already registered
   setIsUserRegistered // New prop to update registration status
 }) => {
   const theme = getTheme(isDarkMode);
   const scriptURL = 'https://script.google.com/macros/s/AKfycbz_OA1zWDUmljQf51nJO57f2qFhbK89_kEX708zi80nlLCsNhpQ203Rjm6ADIlJ0YnT/exec';
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // If user is already registered, skip to survey directly
   React.useEffect(() => {
     if (isUserRegistered) {
@@ -50,6 +47,11 @@ export const UserInfoPage = ({
       }
     };
 
+
+    const handleSubmit = () => {
+      setIsSubmitting(true);
+    };
+
     // Check if form is valid
     const isFormValid = () => {
       return formData.name.trim().length >= 2 && 
@@ -68,28 +70,18 @@ export const UserInfoPage = ({
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name.trim());
       formDataToSend.append('phone', formData.phone.trim());
-      formDataToSend.append('survey', selectedSurvey?.title || '');
       formDataToSend.append('timestamp', new Date().toISOString());
-      formDataToSend.append('registration_type', 'one_time'); // Mark as one-time registration
 
       const response = await fetch(scriptURL, {
         method: 'POST',
         body: formDataToSend,
         mode: 'no-cors' // Important for Google Apps Script
-      });
-
-      // Since mode is 'no-cors', we won't get response data
-      // We'll assume success and mark user as registered
+      });  
       
-      // Store registration status in memory/localStorage
-      setIsUserRegistered(true);
+      
+      setIsSubmitting(false);      
+      setCurrentPage('landingForm'); // Redirect to survey page or whatever is next
 
-      localStorage.setItem("userSigned", true);
-
-      // Show success briefly then redirect to survey
-      setTimeout(() => {
-        setCurrentPage('survey'); // Redirect to actual survey page
-      }, 2000);
       
     } catch (error) {
       console.error('Error submitting to Google Sheets:', error);
@@ -124,36 +116,7 @@ export const UserInfoPage = ({
            /^\+?[\d\s\-()]{10,15}$/.test(formData.phone.trim());
   };
 
-  if (showSuccess) {
     return (
-      <div className={`min-h-screen relative overflow-hidden ${theme.textPrimary}`}>
-        <FloatingParticles isDarkMode={isDarkMode} />
-        <div className={`absolute inset-0 ${theme.background}`}>
-          <div className="absolute inset-0 bg-black opacity-10"></div>
-        </div>
-        
-        <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
-          <div className="text-center transform animate-bounce">
-            <div className="relative mb-6">
-              <div className="bg-green-500 bg-opacity-20 border-green-400 rounded-full w-24 h-24 flex items-center justify-center mx-auto backdrop-blur-lg border border-opacity-30">
-                <Check size={48} className="text-green-400 animate-pulse" />
-              </div>
-              <div className="absolute -top-2 -right-2 text-2xl animate-bounce">✨</div>
-              <div className="absolute -bottom-2 -left-2 text-2xl animate-bounce" style={{animationDelay: '0.5s'}}>🎉</div>
-            </div>
-            <h2 className={`text-3xl font-bold ${theme.textPrimary} mb-4 animate-pulse`}>نجح! 🎊</h2>
-            <p className={`${theme.textSecondary} mb-4`}>تم حفظ معلوماتك بنجاح</p>
-            <p className="text-sm text-green-400 animate-pulse">جاري التحويل للاستطلاع... ⚡</p>
-            <div className="mt-4">
-              <Loader2 className="animate-spin mx-auto text-blue-500" size={32} />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
     <div className={`min-h-screen relative overflow-hidden ${theme.textPrimary}`}>
       <FloatingParticles isDarkMode={isDarkMode} />
       
@@ -166,22 +129,9 @@ export const UserInfoPage = ({
           <div className="relative group">
             <div className={`absolute -inset-1 bg-gradient-to-r ${theme.glowBorder} rounded-3xl blur opacity-25 group-hover:opacity-75 transition duration-500`}></div>
             
-            <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border`}>
-              <div className="text-center mb-8">
-                <div className="text-4xl mb-4 animate-bounce">🎯</div>
-                <h2 className={`text-3xl font-bold ${theme.textPrimary} mb-4`}>تسجيل لمرة واحدة</h2>
-                <p className={`${theme.textSecondary} mb-2`}>سجل مرة واحدة فقط للوصول لجميع الاستطلاعات:</p>
-                <p className={`font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 text-lg animate-pulse`}>
-                  {selectedSurvey?.title}
-                </p>
-                <p className={`text-sm ${theme.textMuted} mt-2`}>
-                  ✨ لن تحتاج لملء النموذج مرة أخرى
-                </p>
-              </div>
-
+            <div className={`relative ${theme.cardBg} backdrop-blur-lg rounded-3xl p-8 border`}>              
               {/* Form with Google Sheets integration */}
               <form method="POST" action={scriptURL} onSubmit={handleFormSubmit} noValidate>
-              {/* <form onSubmit={handleFormSubmit} noValidate> */}
                <div className="space-y-6">
                   {/* Name Field */}
                   <div className="relative">
@@ -272,11 +222,6 @@ export const UserInfoPage = ({
                     )}
                   </div>
 
-                  {/* Hidden fields for Google Sheets */}
-                  <input type="hidden" name="survey" value={selectedSurvey?.title || ''} />
-                  <input type="hidden" name="timestamp" value={new Date().toISOString()} />
-                  <input type="hidden" name="registration_type" value="one_time" />
-
                   {/* Form Actions */}
                   <div className="flex space-x-4 pt-6">
                     <button
@@ -321,28 +266,9 @@ export const UserInfoPage = ({
                   <span className="text-red-500">*</span> جميع الحقول مطلوبة
                   <br />
                   🔒 معلوماتك محفوظة وآمنة معنا
-                  <br />
-                  {/* 📊 البيانات محفوظة في Google Sheets
-                  <br />
-                  <span className="text-green-500 font-medium">✨ تسجيل واحد لجميع الاستطلاعات</span> */}
+                  <br />                 
                 </p>
-              </div>
-
-              {/* Loading Overlay */}
-              {isSubmitting && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-3xl flex items-center justify-center z-50">
-                  <div className="text-center">
-                    <div className="relative mb-4">
-                      <Loader2 className="animate-spin text-blue-500 mx-auto" size={48} />
-                      <div className="absolute inset-0 animate-ping">
-                        <Loader2 className="text-blue-300 opacity-75" size={48} />
-                      </div>
-                    </div>
-                    <p className="text-white font-medium">جاري تسجيل بياناتك...</p>
-                    <p className="text-blue-300 text-sm mt-2">يرجى الانتظار ⚡</p>
-                  </div>
-                </div>
-              )}
+              </div>              
             </div>
           </div>
         </div>

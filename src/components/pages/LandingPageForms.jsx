@@ -30,6 +30,7 @@ import {
   Calendar,
   Globe,
   Loader,
+  Link
 } from "lucide-react";
 import { getTheme } from "../../config/theme";
 import FloatingParticles from "../common/FloatingParticles";
@@ -38,7 +39,6 @@ import { videoService } from "../../services/videoService";
 const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
   const theme = getTheme(isDarkMode);
   const [isVisible, setIsVisible] = useState(false);
-  const [activeVideo, setActiveVideo] = useState(null);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [videosError, setVideosError] = useState(null);
   const [videos, setVideos] = useState([]);
@@ -169,12 +169,6 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
     { number: 4, title: "ابدأ الربح", description: "شاهد 10 إعلانات يومياً" },
   ];
 
-  const handleVideoClick = (url) => {
-    if (url) {
-      window.open(url, "_blank");
-    }
-  };
-
   return (
     <div
       className={`min-h-screen relative overflow-hidden ${theme.textPrimary}`}
@@ -261,12 +255,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
 
               {/* Welcome Message */}
               <div className="relative py-8">
-                {/* Background blur effects */}
-                {/* <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                  <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-                  <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-                </div> */}
-
+                
                 {/* Main content */}
                 <div className="relative">
                   {/* Title with animations */}
@@ -339,38 +328,31 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                 }`}
                 style={{ animationDelay: "0.5s" }}
               >
+
                 {/* Animated gradient border on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                  <div className="relative text-center">
+                    {/* Icon */}
+                    <Users
+                      className="mx-auto text-blue-500 mb-4 animate-bounce"
+                      size={32}
+                    />
 
-                <div className="relative text-center">
-                  {/* Icon */}
-                  <Users
-                    className="mx-auto text-blue-500 mb-4 animate-bounce"
-                    size={32}
-                  />
-
-                  <p
-                    className={`${theme.textSecondary} text-lg leading-relaxed`}
-                  >
-                    إذا كنت مشتركًا لدينا:{" "}
-                    <span className="font-semibold inline-block hover:scale-105 transition-transform">
-                      أدخل اسمك على التطبيق
-                    </span>{" "}
-                    و
-                    <span className="font-semibold inline-block hover:scale-105 transition-transform">
-                      رقمك المسجّل في Click One
-                    </span>
-                  </p>
-
-                  <div className="mt-4 inline-flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-2">
-                    <span className={`${theme.textMuted} text-sm`}>مثال:</span>
-                    <span
-                      className="text-blue-600 font-mono font-semibold"
-                      dir="ltr"
+                    <p
+                      className={`${theme.textSecondary} text-lg leading-relaxed`}
                     >
-                      078XXXXXXX
-                    </span>
-                  </div>
+                      إذا كنت مشتركًا لدينا:{" "}
+                      <span className="font-semibold inline-block hover:scale-105 transition-transform">
+                        أدخل اسمك على التطبيق
+                      </span>{" "}
+                      و
+                      <span className="font-semibold inline-block hover:scale-105 transition-transform">
+                        رقمك المسجّل في Click One
+                      </span>
+                    </p>
+                    <button onClick={() => setCurrentPage("form")} className="mt-4 inline-flex items-center space-x-2 bg-blue-500 text-white rounded-lg px-4 py-2">
+                      <span>تسجيل</span>
+                    </button>
                 </div>
               </div>
 
@@ -669,36 +651,18 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                     />
                   </div>
                 </div>
-              </a>
-
-              {/* Add Videos Button */}
-              <button
-                onClick={() => setCurrentPage("admin-login")}
-                className="group relative"
-              >
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full px-8 py-4 font-semibold hover:shadow-lg transition-all duration-300">
-                  <div className="flex items-center space-x-3">
-                    <Plus
-                      className="group-hover:rotate-90 transition-transform duration-300 ml-2"
-                      size={20}
-                    />
-                    <span>إضافة فيديوهات</span>
-                    <Lock className="opacity-70" size={16} />
-                  </div>
-                </div>
-              </button>
+              </a>              
             </div>
 
             {/* Info Badge */}
-            <div className="text-center mt-8">
+            {/* <div className="text-center mt-8">
               <div
                 className={`inline-flex items-center ${theme.cardBg} backdrop-blur-lg rounded-full px-4 py-2 text-sm ${theme.textMuted}`}
               >
                 <Info className="ml-2" size={16} />
                 <span> سجل دخولك لإضافة فيديوهاتك المفضلة </span>
               </div>
-            </div>
+            </div> */}
           </div>
         </section>
 
@@ -3017,7 +2981,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                 isDarkMode ? "border-gray-700/50" : "border-gray-200/50"
               } pt-8`}
             >
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-3">
                 {/* حقوق الطبع */}
                 <div className="flex items-center gap-4">
                   <div className="relative">
@@ -3031,6 +2995,23 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                     <p className="text-xs">جميع الحقوق محفوظة 2024</p>
                   </div>
                 </div>
+
+                {/* Add Videos Button */}
+                <button
+                  onClick={() => setCurrentPage("admin-login")}
+                  className="group relative"
+                >
+                  <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full px-4 py-2 font-semibold hover:shadow-lg transition-all duration-300">
+                    <div className="flex items-center space-x-3">
+                      <Plus
+                        className="group-hover:rotate-90 transition-transform duration-300 ml-2"
+                        size={10}
+                      />
+                      <span>إضافة فيديوهات</span>
+                      <Lock className="opacity-70" size={6} />
+                    </div>
+                  </div>
+                </button>
 
                 {/* شارات الثقة */}
                 <div className="flex items-center gap-6">
