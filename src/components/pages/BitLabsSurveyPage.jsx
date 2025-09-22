@@ -4,16 +4,17 @@ import { API_CONFIG } from '../../data/surveyPlatforms';
 import { generateUserData } from '../../utils/validation';
 import { getTheme } from '../../config/theme';
 import FloatingParticles from '../common/FloatingParticles';
+import { useNavigate } from 'react-router-dom';
 
 const BitLabsSurveyPage = ({ 
   isDarkMode, 
-  setCurrentPage, 
   participants 
 }) => {
   const theme = getTheme(isDarkMode);
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const { userId } = generateUserData(participants);
 
@@ -57,7 +58,7 @@ const BitLabsSurveyPage = ({
   }, []);
 
   const handleBackToHome = () => {
-    setCurrentPage('home');
+    navigate('/');
   };
 
   const handleSurveyClick = (survey) => {

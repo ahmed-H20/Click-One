@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState, useEffect } from "react";
 import {
   Download,
@@ -35,14 +36,15 @@ import {
 import { getTheme } from "../../config/theme";
 import FloatingParticles from "../common/FloatingParticles";
 import { videoService } from "../../services/videoService";
+import { useNavigate } from "react-router-dom";
 
-const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
+const ClickOneLandingPage = ({ isDarkMode }) => {
   const theme = getTheme(isDarkMode);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [videosError, setVideosError] = useState(null);
   const [videos, setVideos] = useState([]);
-
+  const Navigate = useNavigate();
   const defaultVideos = [
     {
       id: 1,
@@ -91,11 +93,10 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
         response.data.videos &&
         response.data.videos.length > 0
       ) {
-        // استخدام الفيديوهات من آخر مجموعة
-        console.log("Last collection videos:", response.data.videos);
+        localStorage.setItem("Videos",JSON.stringify(response.data.videos));
         setVideos(response.data.videos);
       } else {
-        // إذا لم توجد مجموعة، جلب جميع المجموعات وأخذ آخر 6 فيديوهات
+
         const allCollectionsResponse =
           await videoService.getAllVideoCollections();
 
@@ -350,7 +351,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                         رقمك المسجّل في Click One
                       </span>
                     </p>
-                    <button onClick={() => setCurrentPage("form")} className="mt-4 inline-flex items-center space-x-2 bg-blue-500 text-white rounded-lg px-4 py-2">
+                    <button onClick={() => Navigate('/form')} className="mt-4 inline-flex items-center space-x-2 bg-blue-500 text-white rounded-lg px-4 py-2">
                       <span>تسجيل</span>
                     </button>
                 </div>
@@ -2998,7 +2999,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
 
                 {/* Add Videos Button */}
                 <button
-                  onClick={() => setCurrentPage("admin-login")}
+                  onClick={() => Navigate("/add-videos")}
                   className="group relative"
                 >
                   <div className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full px-4 py-2 font-semibold hover:shadow-lg transition-all duration-300">

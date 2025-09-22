@@ -5,13 +5,14 @@ import { ArrowLeft, Trophy } from 'lucide-react';
 import { API_CONFIG , } from '../../data/surveyPlatforms';
 import { generateUserData } from '../../utils/validation';
 import { getTheme } from '../../config/theme';
+import { useNavigate } from 'react-router-dom';
 
 const TheoremReachFramePage = ({ 
   isDarkMode, 
-  setCurrentPage, 
   participants 
 }) => {
   const theme = getTheme(isDarkMode);
+  const navigate = useNavigate();
   
   // Generate user data for TheoremReach
   const { userId} = generateUserData(participants);
@@ -20,7 +21,7 @@ const TheoremReachFramePage = ({
   const theoremReachUrl = `${API_CONFIG.THEOREMREACH.BASE_URL}?api_key=${API_CONFIG.THEOREMREACH.API_KEY}&transaction_id=25&placement_id=${API_CONFIG.THEOREMREACH.PLACEMENT_ID}&user_id=${userId}`;
 
   const handleBackToHome = () => {
-    setCurrentPage('home');
+      navigate('/');
   };
 
   return (

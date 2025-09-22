@@ -18,7 +18,7 @@ const AppRoutes = (props) => {
     <Routes>
       <Route path="/" element={<HomePage {...props} />} />
       <Route path="/clickone" element={<ClickOneLandingPage {...props} />} /> 
-      <Route path="/user-info" element={<UserInfoPage {...props} />} />
+      <Route path="/user-info" element={<UserInfoPage {...props} />} />      
       <Route path="/form" element={<Form {...props} />} />
       <Route path="/cpx-frame" element={<CPXFramePage {...props} />} />
       <Route path="/theoremreach" element={<TheoremReachFramePage {...props} />} />

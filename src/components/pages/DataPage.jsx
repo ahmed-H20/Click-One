@@ -4,14 +4,15 @@ import FloatingParticles from '../common/FloatingParticles';
 import AnimatedCounter from '../common/AnimatedCounter';
 import { surveyPlatforms } from '../../data/surveyPlatforms';
 import { getTheme } from '../../config/theme';
+import { useNavigate } from 'react-router-dom';
 
 const DataPage = ({ 
   isDarkMode, 
   participants, 
-  setCurrentPage, 
   isVisible 
 }) => {
   const theme = getTheme(isDarkMode);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -30,7 +31,7 @@ const DataPage = ({
             <p className={`text-xl ${theme.textSecondary}`}>نظرة عامة على مشاركة الاستطلاعات ✨</p>
           </div>
           <button
-            onClick={() => setCurrentPage('home')}
+            onClick={() => navigate('/')}
             className={`bg-gradient-to-r ${theme.buttonSecondary} text-white px-6 py-3 rounded-full font-bold transform hover:scale-105 transition-all duration-300 shadow-xl`}
           >
             <div className="flex items-center space-x-2">
@@ -187,7 +188,7 @@ const DataPage = ({
         {/* Bottom Action */}
         <div className="text-center mt-12">
           <button
-            onClick={() => setCurrentPage('home')}
+            onClick={() => navigate('/')}
             className={`group relative overflow-hidden bg-gradient-to-r ${theme.buttonPrimary} text-white font-bold py-6 px-12 rounded-full transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-blue-500/50`}
           >
             <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>

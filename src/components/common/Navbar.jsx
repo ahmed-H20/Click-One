@@ -17,8 +17,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = ({
   isDarkMode,
   toggleDarkMode,
-  currentPage,
-  setCurrentPage,
+  currentPage
 }) => {
   const theme = getTheme(isDarkMode);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -141,7 +140,7 @@ const Navbar = ({
 
           {/* Logo - Right Side */}
           <div
-            onClick={() => setCurrentPage("home")}
+            onClick={() => navigate("/")}
             className="cursor-pointer group flex-shrink-0"
             onMouseEnter={() => setIsLogoHovered(true)}
             onMouseLeave={() => setIsLogoHovered(false)}
@@ -187,7 +186,7 @@ const Navbar = ({
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setCurrentPage(item.page)}
+                onClick={() => navigate(item.path)}
                 className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 ${
                   currentPage === item.page
                     ? `bg-gradient-to-r from-blue-500 to-purple-600 text-white`

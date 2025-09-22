@@ -3,21 +3,21 @@ import { ArrowLeft, Trophy } from 'lucide-react';
 import { API_CONFIG } from '../../data/surveyPlatforms';
 import { generateUserData } from '../../utils/validation';
 import { getTheme } from '../../config/theme';
+import { useNavigate } from 'react-router-dom';
 
 const CPXFramePage = ({ 
   isDarkMode, 
-  setCurrentPage, 
   participants 
 }) => {
   const theme = getTheme(isDarkMode);
-  
+  const navigate = useNavigate();
   // Generate user data for CPX Research
   const { userId, userName, userEmail } = generateUserData(participants);
   
   const cpxUrl = `${API_CONFIG.CPX_RESEARCH.BASE_URL}?app_id=${API_CONFIG.CPX_RESEARCH.APP_ID}&ext_user_id=${userId}&secure_hash=${API_CONFIG.CPX_RESEARCH.SECURE_KEY}&ip_user=${API_CONFIG.CPX_RESEARCH.ip_user}&username=${encodeURIComponent(userName)}&email=${encodeURIComponent(userEmail)}&subid_1=&subid_2=`;
 
   const handleBackToHome = () => {
-    setCurrentPage('home');
+    navigate('/');
   };
 
   return (
