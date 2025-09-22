@@ -7,6 +7,10 @@ import {
   Shield,
   CheckCircle,
   AlertCircle,
+  RefreshCw,
+  Loader,
+  X,
+  Info,
 } from "lucide-react";
 import { getTheme } from "../../config/theme";
 import { videoService } from "../../services/videoService";
@@ -24,6 +28,7 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingLatest, setIsLoadingLatest] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -35,6 +40,50 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
     const newVideos = [...videos];
     newVideos[index][name] = value;
     setVideos(newVideos);
+  };
+
+  // جلب آخر الفيديوهات المضافة
+  const fetchLatestVideos = async () => {
+    setIsLoadingLatest(true);
+    setError("");
+    
+    try {
+      const response = await videoService.getLastVideoCollection();
+      
+      if (response.success && response.data && response.data.videos) {
+        const latestVideos = response.data.videos;
+        
+        // ملء الحقول بآخر الفيديوهات المضافة
+        const updatedVideos = [...videos];
+        latestVideos.forEach((video, index) => {
+          if (index < 6) {
+            updatedVideos[index] = {
+              link: video.link || "",
+              name: video.name || ""
+            };
+          }
+        });
+        
+        // إذا كان عدد الفيديوهات أقل من 6، ملء الباقي بحقول فارغة
+        for (let i = latestVideos.length; i < 6; i++) {
+          updatedVideos[i] = { link: "", name: "" };
+        }
+        
+        setVideos(updatedVideos);
+        setSuccess("تم جلب آخر الفيديوهات بنجاح!");
+      } else {
+        setError("لا توجد فيديوهات مسجلة سابقاً");
+      }
+    } catch (err) {
+      console.error("Error fetching latest videos:", err);
+      setError("حدث خطأ في جلب الفيديوهات");
+    } finally {
+      setIsLoadingLatest(false);
+      // إخفاء رسالة النجاح بعد 3 ثواني
+      if (success) {
+        setTimeout(() => setSuccess(""), 3000);
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -81,6 +130,20 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
     }
   };
 
+  // دالة لمسح جميع الحقول
+  const clearAllVideos = () => {
+    setVideos([
+      { link: "", name: "" },
+      { link: "", name: "" },
+      { link: "", name: "" },
+      { link: "", name: "" },
+      { link: "", name: "" },
+      { link: "", name: "" },
+    ]);
+    setSuccess("تم مسح جميع الحقول");
+    setTimeout(() => setSuccess(""), 2000);
+  };
+
   return (
     <div
       className={`min-h-screen relative overflow-hidden ${theme.background}`}
@@ -121,6 +184,38 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
               </p>
             </div>
 
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
+              <button
+                onClick={fetchLatestVideos}
+                disabled={isLoadingLatest}
+                className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 ${
+                  isDarkMode
+                    ? "bg-blue-600/20 hover:bg-blue-600/30 text-blue-400"
+                    : "bg-blue-50 hover:bg-blue-100 text-blue-600"
+                } flex items-center justify-center gap-2`}
+              >
+                {isLoadingLatest ? (
+                  <Loader className="animate-spin" size={18} />
+                ) : (
+                  <RefreshCw size={18} />
+                )}
+                <span>جلب آخر الفيديوهات المضافة</span>
+              </button>
+              
+              <button
+                onClick={clearAllVideos}
+                className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 ${
+                  isDarkMode
+                    ? "bg-gray-600/20 hover:bg-gray-600/30 text-gray-400"
+                    : "bg-gray-50 hover:bg-gray-100 text-gray-600"
+                } flex items-center justify-center gap-2`}
+              >
+                <X size={18} />
+                <span>مسح جميع الحقول</span>
+              </button>
+            </div>
+
             {/* Alert Messages */}
             {error && (
               <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-center space-x-3 animate-shake">
@@ -148,11 +243,27 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
                       isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
                     } border ${
                       isDarkMode ? "border-gray-700" : "border-gray-200"
-                    }`}
+                    } transition-all duration-300 hover:shadow-md`}
                   >
-                    <h3 className={`${theme.textPrimary} font-semibold mb-3`}>
-                      فيديو {index + 1}
-                    </h3>
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className={`${theme.textPrimary} font-semibold`}>
+                        فيديو {index + 1}
+                      </h3>
+                      {/* Clear individual video button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newVideos = [...videos];
+                          newVideos[index] = { link: "", name: "" };
+                          setVideos(newVideos);
+                        }}
+                        className={`p-1 rounded hover:bg-gray-300/20 transition-colors ${
+                          theme.textSecondary
+                        }`}
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
                     
                     <div className="space-y-3">
                       <div className="relative group">
@@ -173,7 +284,7 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
                               isDarkMode ? "border-gray-600" : "border-gray-300"
                             } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:border-blue-400 dark:placeholder-gray-400 text-sm`}
                             placeholder="https://example.com/video.mp4"
-                                                        disabled={isLoading}
+                            disabled={isLoading || isLoadingLatest}
                           />
                           <LinkIcon
                             className="absolute left-3 top-3 text-gray-400"
@@ -200,7 +311,7 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
                               isDarkMode ? "border-gray-600" : "border-gray-300"
                             } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:border-blue-400 dark:placeholder-gray-400 text-sm`}
                             placeholder="مثال: فيديو تعريفي"
-                            disabled={isLoading}
+                            disabled={isLoading || isLoadingLatest}
                           />
                           <FileText
                             className="absolute left-3 top-3 text-gray-400"
@@ -213,10 +324,10 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
                 ))}
               </div>
 
-              {/* Submit Button */}
+                            {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || isLoadingLatest}
                 className="relative w-full group overflow-hidden mt-8"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-300 group-hover:scale-105"></div>
@@ -234,6 +345,29 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
                 </div>
               </button>
             </form>
+
+            {/* Info Box */}
+            <div className={`mt-6 p-4 rounded-lg ${
+              isDarkMode ? "bg-blue-900/20" : "bg-blue-50"
+            } border ${
+              isDarkMode ? "border-blue-800" : "border-blue-200"
+            }`}>
+              <div className="flex items-start gap-3">
+                <Info className={`${
+                  isDarkMode ? "text-blue-400" : "text-blue-600"
+                } mt-0.5`} size={20} />
+                <div className={`text-sm ${
+                  isDarkMode ? "text-blue-300" : "text-blue-700"
+                }`}>
+                  <p className="font-semibold mb-1">ملاحظة مهمة:</p>
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>يمكنك جلب آخر الفيديوهات المضافة للتعديل عليها</li>
+                    <li>سيتم حفظ الفيديوهات الجديدة كمجموعة منفصلة</li>
+                    <li>يمكنك إضافة أي عدد من الفيديوهات من 1 إلى 6</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
             {/* Back Button */}
             <div className="text-center mt-6">
