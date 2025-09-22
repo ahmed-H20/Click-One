@@ -689,9 +689,11 @@ const HomePage = ({
                         <div className="absolute -inset-2 bg-green-500 rounded-full blur-md opacity-20 animate-ping"></div>
                       </div>
                       <div>
+                      <a href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84">
                         <p className="text-sm text-green-500 font-medium mb-1">
                           اتصل بنا
                         </p>
+                      </a>
                         <span
                           dir="ltr"
                           className={`${theme.textPrimary} font-bold text-lg`}
