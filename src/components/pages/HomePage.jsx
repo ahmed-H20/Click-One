@@ -13,7 +13,7 @@ import {
   Youtube,      
   Shield,       
   CheckCircle,  
-  Award      
+  Award,     
 } from "lucide-react";
 import FloatingParticles from "../common/FloatingParticles";
 import LiveUserCounter from "../common/LiveUserCounter";
@@ -31,7 +31,6 @@ import { useNavigate } from "react-router-dom";
 const HomePage = ({
   isDarkMode,
   participants,
-  handleSurveySelect,
   isVisible,
 }) => {
   const theme = getTheme(isDarkMode);
@@ -317,7 +316,7 @@ const HomePage = ({
         <BannerAd />
 
 
-        <Banner />
+        {/* <Banner /> */}
 
         {/* Platforms Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-16">

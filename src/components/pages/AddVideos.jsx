@@ -17,6 +17,9 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
     { link: "", name: "" },
     { link: "", name: "" },
     { link: "", name: "" },
+    { link: "", name: "" },
+    { link: "", name: "" },
+    { link: "", name: "" },
   ]);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -52,7 +55,6 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
     }
 
     try {
-      // استخدام createVideoCollection بدلاً من createVideos
       const response = await videoService.createVideoCollection(validVideos);
 
       if (response.success) {
@@ -60,6 +62,9 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
 
         // مسح الحقول
         setVideos([
+          { link: "", name: "" },
+          { link: "", name: "" },
+          { link: "", name: "" },
           { link: "", name: "" },
           { link: "", name: "" },
           { link: "", name: "" },
@@ -87,9 +92,9 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         <div
-          className={`w-full max-w-lg transform transition-all duration-1000 ${
+          className={`w-full max-w-4xl transform transition-all duration-1000 ${
             isVisible
               ? "translate-y-0 opacity-100 scale-100"
               : "translate-y-10 opacity-0 scale-95"
@@ -112,7 +117,7 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
                 إضافة لينكات الفيديوهات
               </h1>
               <p className={`${theme.textSecondary} mt-2`}>
-                يرجى إدخال روابط وأسماء الفيديوهات المراد إضافتها
+                يمكنك إضافة حتى 6 فيديوهات دفعة واحدة
               </p>
             </div>
 
@@ -133,65 +138,80 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
               </div>
             )}
 
-            {/* Videos Form */}
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {videos.map((video, index) => (
-                <div key={index} className="space-y-4">
-                  <div className="relative group">
-                    <label
-                      className={`block ${theme.textSecondary} text-sm font-medium mb-2`}
-                    >
-                      رابط الفيديو {index + 1}
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="url"
-                        name="link"
-                        value={video.link}
-                        onChange={(e) => handleChange(index, e)}
-                        className={`w-full px-4 py-3 pr-12 rounded-xl ${
-                          theme.cardBg
-                        } border ${
-                          isDarkMode ? "border-gray-600" : "border-gray-300"
-                        } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:border-blue-400 dark:placeholder-gray-400`}
-                        placeholder="https://example.com/video.mp4"
-                        disabled={isLoading}
-                      />
-                      <LinkIcon
-                        className="absolute left-3 top-3.5 text-gray-400"
-                        size={20}
-                      />
-                    </div>
-                  </div>
+            {/* Videos Form - Grid Layout for 6 videos */}
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[500px] overflow-y-auto scrollbar-hide pr-2">
+                {videos.map((video, index) => (
+                  <div
+                    key={index}
+                    className={`p-4 rounded-xl ${
+                      isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
+                    } border ${
+                      isDarkMode ? "border-gray-700" : "border-gray-200"
+                    }`}
+                  >
+                    <h3 className={`${theme.textPrimary} font-semibold mb-3`}>
+                      فيديو {index + 1}
+                    </h3>
+                    
+                    <div className="space-y-3">
+                      <div className="relative group">
+                        <label
+                          className={`block ${theme.textSecondary} text-sm font-medium mb-1`}
+                        >
+                          رابط الفيديو
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="url"
+                            name="link"
+                            value={video.link}
+                            onChange={(e) => handleChange(index, e)}
+                            className={`w-full px-4 py-2.5 pr-10 rounded-lg ${
+                              theme.cardBg
+                            } border ${
+                              isDarkMode ? "border-gray-600" : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:border-blue-400 dark:placeholder-gray-400 text-sm`}
+                            placeholder="https://example.com/video.mp4"
+                                                        disabled={isLoading}
+                          />
+                          <LinkIcon
+                            className="absolute left-3 top-3 text-gray-400"
+                            size={18}
+                          />
+                        </div>
+                      </div>
 
-                  <div className="relative group">
-                    <label
-                      className={`block ${theme.textSecondary} text-sm font-medium mb-2`}
-                    >
-                      اسم الفيديو {index + 1}
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="name"
-                        value={video.name}
-                        onChange={(e) => handleChange(index, e)}
-                        className={`w-full px-4 py-3 pr-12 rounded-xl ${
-                          theme.cardBg
-                        } border ${
-                          isDarkMode ? "border-gray-600" : "border-gray-300"
-                        } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:border-blue-400 dark:placeholder-gray-400`}
-                        placeholder="مثال: فيديو تعريفي"
-                        disabled={isLoading}
-                      />
-                      <FileText
-                        className="absolute left-3 top-3.5 text-gray-400"
-                        size={20}
-                      />
+                      <div className="relative group">
+                        <label
+                          className={`block ${theme.textSecondary} text-sm font-medium mb-1`}
+                        >
+                          اسم الفيديو
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="name"
+                            value={video.name}
+                            onChange={(e) => handleChange(index, e)}
+                            className={`w-full px-4 py-2.5 pr-10 rounded-lg ${
+                              theme.cardBg
+                            } border ${
+                              isDarkMode ? "border-gray-600" : "border-gray-300"
+                            } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 group-hover:border-blue-400 dark:placeholder-gray-400 text-sm`}
+                            placeholder="مثال: فيديو تعريفي"
+                            disabled={isLoading}
+                          />
+                          <FileText
+                            className="absolute left-3 top-3 text-gray-400"
+                            size={18}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
 
               {/* Submit Button */}
               <button
@@ -227,6 +247,7 @@ const AddVideos = ({ isDarkMode, setCurrentPage }) => {
           </div>
         </div>
       </div>
+
       <style>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
