@@ -1,4 +1,3 @@
-// src/components/pages/ClickOneLandingPage.jsx
 import React, { useState, useEffect } from "react";
 import {
   Download,
@@ -30,7 +29,7 @@ import {
   X,
   Calendar,
   Globe,
-  Loader
+  Loader,
 } from "lucide-react";
 import { getTheme } from "../../config/theme";
 import FloatingParticles from "../common/FloatingParticles";
@@ -42,6 +41,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
   const [activeVideo, setActiveVideo] = useState(null);
   const [isLoadingVideos, setIsLoadingVideos] = useState(true);
   const [videosError, setVideosError] = useState(null);
+  const [videos, setVideos] = useState([]);
 
   const defaultVideos = [
     {
@@ -59,14 +59,30 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
       name: "طريقة السحب والاستبدال",
       link: "https://www.youtube.com/watch?v=VIDEO_ID_3",
     },
+    {
+      id: 4,
+      name: "شرح خطط الأرباح المتقدمة",
+      link: "https://www.youtube.com/watch?v=VIDEO_ID_4",
+    },
+    {
+      id: 5,
+      name: "كيفية دعوة الأصدقاء",
+      link: "https://www.youtube.com/watch?v=VIDEO_ID_5",
+    },
+    {
+      id: 6,
+      name: "نصائح لتحقيق أقصى ربح",
+      link: "https://www.youtube.com/watch?v=VIDEO_ID_6",
+    },
   ];
 
-  // جلب آخر مجموعة فيديوهات من قاعدة البيانات
+  // جلب آخر 6 فيديوهات من آخر مجموعة في قاعدة البيانات
   const fetchLatestVideos = async () => {
-    try {
-      setIsLoadingVideos(true);
-      setVideosError(null);
+    setIsLoadingVideos(true);
+    setVideosError(null);
 
+    try {
+      // جلب آخر مجموعة فيديوهات
       const response = await videoService.getLastVideoCollection();
 
       if (
@@ -75,15 +91,38 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
         response.data.videos &&
         response.data.videos.length > 0
       ) {
-        // استخدام الفيديوهات من قاعدة البيانات
+        // استخدام الفيديوهات من آخر مجموعة
+        console.log("Last collection videos:", response.data.videos);
         setVideos(response.data.videos);
       } else {
-        // إذا لم توجد فيديوهات، استخدام القائمة الافتراضية
-        setVideos(defaultVideos);
+        // إذا لم توجد مجموعة، جلب جميع المجموعات وأخذ آخر 6 فيديوهات
+        const allCollectionsResponse =
+          await videoService.getAllVideoCollections();
+
+        if (
+          allCollectionsResponse.success &&
+          allCollectionsResponse.data &&
+          allCollectionsResponse.data.length > 0
+        ) {
+          // أخذ آخر مجموعة
+          const lastCollection =
+            allCollectionsResponse.data[allCollectionsResponse.data.length - 1];
+          if (lastCollection.videos && lastCollection.videos.length > 0) {
+            console.log("Videos from last collection:", lastCollection.videos);
+            setVideos(lastCollection.videos);
+          } else {
+            console.log("No videos in last collection, using defaults");
+            setVideos(defaultVideos);
+          }
+        } else {
+          // إذا لم توجد أي مجموعات، استخدام القائمة الافتراضية
+          console.log("No collections found in database, using defaults");
+          setVideos(defaultVideos);
+        }
       }
     } catch (error) {
-      console.error("Error fetching videos from database:", error);
-      setVideosError("فشل في تحميل الفيديوهات من قاعدة البيانات");
+      console.error("Error fetching videos:", error);
+      setVideosError("حدث خطأ في تحميل الفيديوهات");
       // في حالة الخطأ، نستخدم القائمة الافتراضية
       setVideos(defaultVideos);
     } finally {
@@ -95,8 +134,6 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
     setIsVisible(true);
     fetchLatestVideos();
   }, []);
-
-  const [videos, setVideos] = useState(defaultVideos);
 
   const features = [
     {
@@ -490,8 +527,8 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
 
             {/* Videos Grid */}
             {!isLoadingVideos && !videosError && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                {videos.map((video, index) => {
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                {videos.slice(0, 6).map((video, index) => {
                   // التحقق من وجود الرابط
                   if (!video.link) {
                     console.error("Video link is missing for:", video);
@@ -1580,7 +1617,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                           حد أدنى للسحب
                         </p>
                         <p className={`text-lg font-bold ${theme.textPrimary}`}>
-                          10 دينار
+                          5 دينار
                         </p>
                       </div>
                       <div className="text-center p-4 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-xl group/card hover:scale-105 transition-transform">
@@ -1598,7 +1635,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                           وقت المعالجة
                         </p>
                         <p className={`text-lg font-bold ${theme.textPrimary}`}>
-                          24-48 ساعة
+                          24-72 ساعة
                         </p>
                       </div>
                     </div>
@@ -2769,7 +2806,7 @@ const ClickOneLandingPage = ({ isDarkMode, setCurrentPage }) => {
                     size={20}
                   />
                   <span className={`${theme.textSecondary} font-medium`}>
-                    تقييم 4.8 من 5
+                    تقييم 5 من 5
                   </span>
                 </div>
               </div>
