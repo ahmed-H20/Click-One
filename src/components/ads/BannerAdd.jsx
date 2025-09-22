@@ -6,7 +6,7 @@ export default function BannerAd() {
     script1.type = "text/javascript";
     script1.innerHTML = `
       atOptions = {
-        'key' : '68d870f6fb9497091b5abd54fb292cd5',
+        'key' : 'a94bf5be7147514dd1086e4d1e7c1ef0',
         'format' : 'iframe',
         'height' : 60,
         'width' : 468,
@@ -15,7 +15,7 @@ export default function BannerAd() {
     `;
     const script2 = document.createElement("script");
     script2.type = "text/javascript";
-    script2.src = "//www.highperformanceformat.com/68d870f6fb9497091b5abd54fb292cd5/invoke.js";
+    script2.src = "//www.highperformanceformat.com/a94bf5be7147514dd1086e4d1e7c1ef0/invoke.js";
 
     document.getElementById("banner-ad").appendChild(script1);
     document.getElementById("banner-ad").appendChild(script2);
