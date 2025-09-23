@@ -42,12 +42,12 @@ const Navbar = ({
   const navItems = [
     {
       id: "clickone",
-      label: "ClickOne",
+      label: "فديوهات اليوم",
       icon: Award,
       page: "clickone-landing",
       path: "/clickone",
     }, 
-    { id: "home", label: "Home", icon: Home, page: "home", path: "/" },       
+    { id: "home", label: "الاستطلاعات", icon: Home, page: "home", path: "/" },       
   ];
 
   return (
