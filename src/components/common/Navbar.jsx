@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = ({
   isDarkMode,
   toggleDarkMode,
-  currentPage
+  currentPage,
 }) => {
   const theme = getTheme(isDarkMode);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -145,28 +145,30 @@ const Navbar = ({
             onMouseEnter={() => setIsLogoHovered(true)}
             onMouseLeave={() => setIsLogoHovered(false)}
           >
-            <div className="relative">
-              <div
-                className={`absolute -inset-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${
-                  isLogoHovered ? "animate-pulse" : ""
-                }`}
-              ></div>
-              <div className="relative w-14 h-14 md:w-16 md:h-16 overflow-hidden rounded-full shadow-2xl border-3 border-white backdrop-blur-lg transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 bg-white p-1">
-                <img
-                  src={logo}
-                  alt="Logo"
-                  className="w-full h-full object-contain rounded-full"
-                />
-                {isLogoHovered && (
-                  <div className="absolute -top-1 -right-1">
-                    <Sparkles
-                      className="text-yellow-400 animate-pulse drop-shadow-lg"
-                      size={14}
-                    />
-                  </div>
-                )}
+            <a href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84" target="_blank">
+              <div className="relative">
+                <div
+                  className={`absolute -inset-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full blur-lg opacity-50 group-hover:opacity-75 transition duration-500 ${
+                    isLogoHovered ? "animate-pulse" : ""
+                  }`}
+                ></div>
+                <div className="relative w-14 h-14 md:w-16 md:h-16 overflow-hidden rounded-full shadow-2xl border-3 border-white backdrop-blur-lg transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 bg-white p-1">
+                  <img
+                    src={logo}
+                    alt="Logo"
+                    className="w-full h-full object-contain rounded-full"
+                  />
+                  {isLogoHovered && (
+                    <div className="absolute -top-1 -right-1">
+                      <Sparkles
+                        className="text-yellow-400 animate-pulse drop-shadow-lg"
+                        size={14}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            </a>
           </div>
         </div>
 

@@ -352,7 +352,9 @@ const ClickOneLandingPage = ({ isDarkMode }) => {
                       </span>
                     </p>
                     <button onClick={() => Navigate('/form')} className="mt-4 inline-flex items-center space-x-2 bg-blue-500 text-white rounded-lg px-4 py-2">
-                      <span>تسجيل</span>
+                      <a target='_blank' href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84">
+                        <span>تسجيل</span>
+                      </a>
                     </button>
                 </div>
               </div>
@@ -557,6 +559,7 @@ const ClickOneLandingPage = ({ isDarkMode }) => {
                         className={`relative group ${theme.cardBg} backdrop-blur-lg rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300`}
                       >
                         {/* Video Container */}
+
                         <div className="relative aspect-video bg-gradient-to-br from-gray-800 to-gray-900 overflow-hidden">
                           {isYouTube && videoId ? (
                             // YouTube Embed
@@ -596,16 +599,16 @@ const ClickOneLandingPage = ({ isDarkMode }) => {
                             </div>
                           )}
                         </div>
-
-                        {/* Video Title */}
-                        <div className="p-5">
-                          <h3
-                            className={`${theme.textPrimary} font-bold text-lg group-hover:text-blue-600 transition-colors`}
-                          >
-                            {video.name}
-                          </h3>
-                        </div>
-
+                        <a target='_blank' href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84">
+                          {/* Video Title */}
+                          <div className="p-5">
+                            <h3
+                              className={`${theme.textPrimary} font-bold text-lg group-hover:text-blue-600 transition-colors`}
+                            >
+                              {video.name}
+                            </h3>
+                          </div>
+                        </a>
                         {/* Play Button Overlay (للفيديوهات الخارجية) */}
                         {!isYouTube && !isMP4 && (
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

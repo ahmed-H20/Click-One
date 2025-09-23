@@ -66,6 +66,7 @@ const HorizontalAdsBanner = ({
             style={scrollingStyle}
           >
             {/* Google AdSense Banner */}
+          <a target='_blank' href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84">
             <div className="flex items-center px-8">
               <ins
                 className="adsbygoogle"
@@ -81,6 +82,7 @@ const HorizontalAdsBanner = ({
                 data-full-width-responsive="false"
               ></ins>
             </div>
+          </a>
             
             {/* Fallback Content - Multiple ads simulation */}
             <div className="flex items-center space-x-8 px-8">
@@ -114,12 +116,14 @@ const HorizontalAdsBanner = ({
         {/* Footer */}
         <div className={`px-4 py-2 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'} bg-opacity-30 border-t border-opacity-20`}>
           <div className="flex items-center justify-between text-xs">
-            <span className={`${theme.textMuted}`}>
-              الإعلانات تدعم تطوير المنصة
-            </span>
-            <a 
-              href="https://support.google.com/adsense/answer/9012903" 
-              target="_blank" 
+            <a target='_blank' href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84">
+              <span className={`${theme.textMuted}`}>
+                الإعلانات تدعم تطوير المنصة
+              </span>
+            </a>
+            <a
+              href="https://support.google.com/adsense/answer/9012903"
+              target="_blank"
               rel="noopener noreferrer"
               className={`${theme.textMuted} hover:text-blue-500 transition-colors duration-200 flex items-center space-x-1`}
             >
@@ -189,7 +193,20 @@ export const CompactHorizontalAdsBanner = ({ isDarkMode, speed = 'medium' }) => 
           >     
             {/* Fallback compact ads */}
             <div className="flex items-center space-x-4 px-4">             
-                <BannerAd />                     
+                <BannerAd />    
+                 {
+                  [...Array(5)].map((_, index) => (
+                    <a href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84" target="_blank">
+                      <div className="text-center px-4" key={`compact-${index}`}>
+                        <h2 className={`text-2xl font-bold mb-4 ${
+                            isDarkMode ? 'text-white' : 'text-gray-800'
+                          }`}>
+                            🚀 اضغط هنا واربح معنا 📢
+                        </h2>
+                      </div>  
+                    </a>   
+                  ))
+                 }               
             </div>
 
             {/* AdSense Mobile Banner */}            

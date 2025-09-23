@@ -36,23 +36,25 @@ const GoogleAdsBanner = ({ isDarkMode, position = 'bottom' }) => {
         </div>
 
         {/* Ad Container */}
-        <div className="p-4">
-          {/* Google AdSense Auto Ad */}
-          <BannerAdBig />
-          
-          {/* Fallback content when ads are not loaded */}
-          <div className={`min-h-[120px] flex items-center justify-center bg-gradient-to-r ${isDarkMode ? 'from-gray-700 to-gray-800' : "bg-white" } rounded-lg`}>
-            <div className="text-center">
-              <div className="text-4xl mb-2">📢</div>
-              <p className={`${theme.textMuted} text-sm`}>
-                مساحة إعلانية
-              </p>
-              <p className={`${theme.textMuted} text-xs mt-1 opacity-70`}>
-                Advertisement Space
-              </p>
+        <a href="https://www.revenuecpmgate.com/sfqv5uj35h?key=c706dbe1ccb744268bcdec06ceef9e84" target="_blank">
+           <div className="p-4">
+            {/* Google AdSense Auto Ad */}
+            <BannerAdBig />
+            
+            {/* Fallback content when ads are not loaded */}
+            <div className={`min-h-[120px] flex items-center justify-center bg-gradient-to-r ${isDarkMode ? 'from-gray-700 to-gray-800' : "bg-white" } rounded-lg`}>
+              <div className="text-center">
+                <div className="text-4xl mb-2">📢</div>
+                <p className={`${theme.textMuted} text-sm`}>
+                  مساحة إعلانية اضغط هنا
+                </p>
+                <p className={`${theme.textMuted} text-xs mt-1 opacity-70`}>
+                  Advertisement Space
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
 
         {/* Ad Footer */}
         <div className={`px-4 py-2 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'} bg-opacity-30 border-t border-opacity-20`}>
@@ -118,14 +120,14 @@ export const ResponsiveAdBanner = ({ isDarkMode, size = 'large' }) => {
 
         {/* Ad Content */}
         <div className="p-3">
-          {/* <ins
+          <ins
             className="adsbygoogle block"
             style={{ display: 'block' }}
             data-ad-client="ca-pub-7193351910677878"
             data-ad-slot="1810578910"
             data-ad-format={config.adFormat}
             data-full-width-responsive={config.responsive.toString()}
-          ></ins> */}
+          ></ins>
           <BannerAdBig />
           
           {/* Fallback */}
